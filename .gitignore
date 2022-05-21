@@ -1,0 +1,6 @@
+build
+.vs
+.vscode
+*.json
+x64
+Win32
