@@ -9,7 +9,6 @@ set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS ON)
 # Tell CMake where to search for includes and libs on Windows
 if (WIN32)
   set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}
-    "3rdparty/SDL2_ttf-2.0.14"
   )
 endif ()
 

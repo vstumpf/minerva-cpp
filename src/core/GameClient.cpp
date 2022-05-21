@@ -2,16 +2,14 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <iostream>
+#include <glad/glad.h>
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
 
 #include "Common/debug.hpp"
 
-GameClient::GameClient()
-    : full_screen_(),
-      window_width_(),
-      window_height_(),
-      vsync_(),
-      msaa_(),
-      font_folder_() {}
+GameClient::GameClient() {}
 
 GameClient::~GameClient() {
 }
@@ -22,7 +20,40 @@ bool GameClient::Initialize() {
 }
 
 void GameClient::Run() {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        std::cerr << "SDL2 video subsystem couldn't be initialized. Error: "
+            << SDL_GetError()
+            << std::endl;
+        exit(1);
+    }
 
+    SDL_Window* window = SDL_CreateWindow(
+        "Glad Sample",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        window_width_,
+        window_height_,
+        SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
+        SDL_RENDERER_ACCELERATED);
+
+    if (renderer == nullptr) {
+        std::cerr << "SDL2 Renderer couldn't be created. Error: "
+            << SDL_GetError()
+            << std::endl;
+        exit(1);
+    }
+
+    // Create a OpenGL context on SDL2
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
+
+    SDL_Delay(3000);
+
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 bool GameClient::LoadConfiguration(const std::string& file_name) {

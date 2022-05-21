@@ -7,3 +7,9 @@
 [submodule "3rdparty/json/json"]
 	path = 3rdparty/json/json
 	url = git@github.com:nlohmann/json.git
+[submodule "3rdparty/SDL2/SDL2"]
+	path = 3rdparty/SDL2/SDL2
+	url = git@github.com:libsdl-org/SDL.git
+[submodule "3rdparty/SDL_ttf/SDL_ttf"]
+	path = 3rdparty/SDL_ttf/SDL_ttf
+	url = git@github.com:libsdl-org/SDL_ttf.git
