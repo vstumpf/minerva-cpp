@@ -9,8 +9,7 @@ file(
 
 add_executable(
     ${PROJECT_NAME}
-    ${MINERVA_FILES}
-)
+    ${MINERVA_FILES})
 
 set_target_properties(
     ${PROJECT_NAME} PROPERTIES
@@ -36,9 +35,9 @@ endforeach()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ${SDL2_INCLUDE_DIR}
-    ${SDL2_TTF_INCLUDE_DIRS}
     ${OPENGL_INCLUDE_DIR}
+#    ${SDL2_INCLUDE_DIR}
+#    ${SDL2_ttf_SOURCE_DIR}
 )
 
 # Link libraries and add include directories for third parties
@@ -48,7 +47,7 @@ target_link_libraries(${PROJECT_NAME}
     glad
     spdlog
     nlohmann_json
-    ${SDL2_TTF_LIBRARIES}
+    SDL2_ttf::SDL2_ttf-static
     ${OPENGL_LIBRARIES}
 )
 if (WIN32)

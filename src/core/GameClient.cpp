@@ -33,7 +33,7 @@ void GameClient::Run() {
         SDL_WINDOWPOS_UNDEFINED,
         window_width_,
         window_height_,
-        SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+        SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | (full_screen_ ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
         SDL_RENDERER_ACCELERATED);
