@@ -1,0 +1,15 @@
+#ifndef MINERVA_RENDER_PIXEL_FORMAT_H_
+#define MINERVA_RENDER_PIXEL_FORMAT_H_
+
+enum class PixelFormat {
+	A1R5G5B5 = 0x0,
+	A4R4G4B4 = 0x1,
+	R5G6B5 = 0x2,
+	R5G5B5 = 0x3,
+	A8R8G8B8 = 0x4,
+	BUMP = 0x5,
+	LAST = 0x6,
+	UNSUPPORTED = 0xff,
+};
+
+#endif // MINERVA_RENDER_PIXEL_FORMAT_H_

@@ -1,5 +1,8 @@
 #include <stdlib.h>
 
+#define SDL_MAIN_HANDLED
+
+
 #include "common/debug.hpp"
 #include "core/GameClient.hpp"
 

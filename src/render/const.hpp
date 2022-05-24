@@ -1,0 +1,6 @@
+#ifndef MINERVA_RENDER_CONST_H_
+#define MINERVA_RENDER_CONST_H_
+
+constexpr float PI = 3.141592f;
+
+#endif // MINERVA_RENDER_CONST_H_

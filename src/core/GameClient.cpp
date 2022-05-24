@@ -9,51 +9,48 @@
 
 #include "Common/debug.hpp"
 
+#include "render/Window.hpp"
+
 GameClient::GameClient() {}
 
 GameClient::~GameClient() {
+    SDL_Quit();
 }
 
 bool GameClient::Initialize() {
 	LoadConfiguration("minerva.json");
+    window_ = std::make_shared<Window>();
+
+    const uint32_t flags = (full_screen_ ? static_cast<int>(DeviceFlag::FULLSCREEN) : 0) |
+        (vsync_ ? static_cast<int>(DeviceFlag::VSYNC) : 0);
+
+
+    window_->init(window_width_, window_height_, msaa_, flags);
+
   return true;
 }
 
 void GameClient::Run() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        std::cerr << "SDL2 video subsystem couldn't be initialized. Error: "
-            << SDL_GetError()
-            << std::endl;
-        exit(1);
+
+    auto renderer = window_->createRenderer();
+
+
+    SDL_Event windowEvent;
+    bool running = true;
+    while (running) {
+        if (SDL_PollEvent(&windowEvent)) {
+            switch (windowEvent.type) {
+            case SDL_QUIT:
+                running = false;
+                break;
+            case SDL_KEYUP:
+                if (windowEvent.key.keysym.sym == SDLK_ESCAPE)
+                    running = false;
+                break;
+            }
+        }
+        window_->drawFrame();
     }
-
-    SDL_Window* window = SDL_CreateWindow(
-        "Glad Sample",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        window_width_,
-        window_height_,
-        SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | (full_screen_ ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
-
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
-        SDL_RENDERER_ACCELERATED);
-
-    if (renderer == nullptr) {
-        std::cerr << "SDL2 Renderer couldn't be created. Error: "
-            << SDL_GetError()
-            << std::endl;
-        exit(1);
-    }
-
-    // Create a OpenGL context on SDL2
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
-
-    SDL_Delay(3000);
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 }
 
 bool GameClient::LoadConfiguration(const std::string& file_name) {
@@ -67,7 +64,7 @@ bool GameClient::LoadConfiguration(const std::string& file_name) {
       json_file.close();
       try {
           // Graphics settings
-          const auto graphics_config = json_config.at("graphics");
+          const auto& graphics_config = json_config.at("graphics");
           full_screen_ = graphics_config.value("fullscreen", false);
           window_width_ = graphics_config.value("window_width", 640);
           window_height_ = graphics_config.value("window_height", 480);
@@ -75,7 +72,7 @@ bool GameClient::LoadConfiguration(const std::string& file_name) {
           msaa_ = graphics_config.value("msaa", 0);
 
           // Fonts settings
-          const auto settings_config = json_config.at("fonts");
+          const auto& settings_config = json_config.at("fonts");
           font_folder_ = settings_config.value("font_folder", "");
       }
       catch (const std::exception& ex) {

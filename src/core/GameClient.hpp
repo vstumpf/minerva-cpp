@@ -1,7 +1,14 @@
 #ifndef MINERVA_CORE_GAMECLIENT_H_
 #define MINERVA_CORE_GAMECLIENT_H_
 
+
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
+
 #include <string>
+#include <memory>
+
+#include <render/Window.hpp>
 
 class GameClient {
  public:
@@ -15,6 +22,8 @@ class GameClient {
   bool LoadConfiguration(const std::string& file_name);
 
  private:
+	 std::shared_ptr<Window> window_{nullptr};
+
   bool full_screen_{false};
   int window_width_{640};
   int window_height_{480};
