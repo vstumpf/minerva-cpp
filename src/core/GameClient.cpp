@@ -7,7 +7,10 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
-#include "Common/debug.hpp"
+#include "common/debug.hpp"
+
+#include "modes/LoginMode.hpp"
+#include "core/ModeManager.hpp"
 
 #include "render/Window.hpp"
 
@@ -21,7 +24,7 @@ bool GameClient::Initialize() {
 	LoadConfiguration("minerva.json");
     window_ = std::make_shared<Window>();
 
-    const uint32_t flags = (full_screen_ ? static_cast<int>(DeviceFlag::FULLSCREEN) : 0) |
+    const uint32_t flags = (fullScreen_ ? static_cast<int>(DeviceFlag::FULLSCREEN) : 0) |
         (vsync_ ? static_cast<int>(DeviceFlag::VSYNC) : 0);
 
 
@@ -34,23 +37,9 @@ void GameClient::Run() {
 
     auto renderer = window_->createRenderer();
 
+    modeManager_ = std::make_shared<ModeManager>(ModeType::LOGIN, "", renderer);
 
-    SDL_Event windowEvent;
-    bool running = true;
-    while (running) {
-        if (SDL_PollEvent(&windowEvent)) {
-            switch (windowEvent.type) {
-            case SDL_QUIT:
-                running = false;
-                break;
-            case SDL_KEYUP:
-                if (windowEvent.key.keysym.sym == SDLK_ESCAPE)
-                    running = false;
-                break;
-            }
-        }
-        window_->drawFrame();
-    }
+    modeManager_->run();
 }
 
 bool GameClient::LoadConfiguration(const std::string& file_name) {
@@ -65,19 +54,14 @@ bool GameClient::LoadConfiguration(const std::string& file_name) {
       try {
           // Graphics settings
           const auto& graphics_config = json_config.at("graphics");
-          full_screen_ = graphics_config.value("fullscreen", false);
+          fullScreen_ = graphics_config.value("fullscreen", false);
           window_width_ = graphics_config.value("window_width", 640);
           window_height_ = graphics_config.value("window_height", 480);
           vsync_ = graphics_config.value("vsync", false);
           msaa_ = graphics_config.value("msaa", 0);
-
-          // Fonts settings
-          const auto& settings_config = json_config.at("fonts");
-          font_folder_ = settings_config.value("font_folder", "");
       }
       catch (const std::exception& ex) {
           LOG(error, "Failed to parse {} ({})", file_name, ex.what());
-          return false;
       }
   }
   else {
@@ -89,7 +73,7 @@ bool GameClient::LoadConfiguration(const std::string& file_name) {
     msaa_ = 32;
   }
 
-  LOG(debug, "Fullscreen: {}", full_screen_);
+  LOG(debug, "Fullscreen: {}", fullScreen_);
   LOG(debug, "Resolution: {}x{}", window_width_, window_height_);
   LOG(debug, "Font folder: {}", font_folder_);
   LOG(debug, "Vsync: {}", vsync_ ? "On" : "Off");

@@ -11,8 +11,8 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 	isFullscreen_ = (dwFlags & static_cast<int>(DeviceFlag::FULLSCREEN));
 
 	const bool vsync = (dwFlags & static_cast<int>(DeviceFlag::VSYNC));
-	dwRenderWidth_ = width;
-	dwRenderHeight_ = height;
+	width_ = width;
+	height_ = height;
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		return -1;
@@ -40,6 +40,7 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 	uint32_t sdlFlags = SDL_WINDOW_OPENGL;
 	if (isFullscreen_) {
@@ -50,8 +51,8 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 		"Minerva",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		dwRenderWidth_,
-		dwRenderHeight_,
+		width_,
+		height_,
 		sdlFlags);
 
 	if (!sdlWindow_) {
@@ -77,15 +78,15 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 	LOG(info, "Version:  {}", glGetString(GL_VERSION));
 
 	// Set the viewport
-	glViewport(0, 0, dwRenderHeight_, dwRenderHeight_);
+	glViewport(0, 0, width_, height_);
 	if (glGetError() != GL_NO_ERROR) {
 		return -1;
 	}
 
-	glEnable(GL_DEPTH_TEST);
-	if (glGetError() != GL_NO_ERROR) {
-		return -1;
-	}
+	// glEnable(GL_DEPTH_TEST);
+	// if (glGetError() != GL_NO_ERROR) {
+	// 	return -1;
+	// }
 
 	glEnable(GL_BLEND);
 	if (glGetError() != GL_NO_ERROR) {
@@ -94,7 +95,7 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Bind a dummy vao to comply with core profile's specifications
+	// // Bind a dummy vao to comply with core profile's specifications
 	GLuint dummy_vao;
 	glGenVertexArrays(1, &dummy_vao);
 	glBindVertexArray(dummy_vao);
@@ -104,7 +105,7 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 
 std::shared_ptr<Renderer> Window::createRenderer() {
 	try {
-		auto renderer = std::make_shared<Renderer>(dwRenderWidth_, dwRenderHeight_);
+		auto renderer = std::make_shared<Renderer>(this);
 		return renderer;
 	}
 	catch (std::exception e) {
@@ -124,4 +125,15 @@ void Window::enableVsync(bool enable) {
 	else {
 		SDL_GL_SetSwapInterval(0);
 	}
+}
+
+void Window::clear(uint32_t color) {
+	float a, r, g, b;
+
+	a = ((color >> 24) & 0xFF) / 255.f;
+	r = ((color >> 16) & 0xFF) / 255.f;
+	g = ((color >> 8) & 0xFF) / 255.f;
+	b = ((color)&0xFF) / 255.f;
+	glClearColor(r, g, b, a);
+	glClear(GL_COLOR_BUFFER_BIT);
 }

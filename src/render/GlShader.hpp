@@ -1,5 +1,5 @@
-#ifndef MINVERA_RENDER_GLSHADER_H_
-#define MINVERA_RENDER_GLSHADER_H_
+#ifndef MINVERA_RENDER_GLSHADER_HPP_
+#define MINVERA_RENDER_GLSHADER_HPP_
 
 #include <string>
 
@@ -16,4 +16,4 @@ private:
 	GLuint shader_id_;
 };
 
-#endif  // MINERVA_RENDER_GLSHADER_H_
+#endif  // MINERVA_RENDER_GLSHADER_HPP_

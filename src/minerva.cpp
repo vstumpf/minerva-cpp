@@ -11,6 +11,10 @@ int main(int argc, char* argv[]) {
   spdlog::get(MINERVA_LOGGER_NAME)->set_level(spdlog::level::debug);
 #endif
 
+#ifdef MINERVA_GL_DEBUG
+  spdlog::get(MINERVA_GL_LOGGER_NAME)->set_level(spdlog::level::debug);
+#endif
+
   GameClient game;
 
   if (!game.Initialize()) {

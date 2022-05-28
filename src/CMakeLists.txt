@@ -65,3 +65,12 @@ if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE "/MP")
     target_compile_options(${PROJECT_NAME} PRIVATE "/we4701")
 endif ()
+
+message(${CMAKE_CURRENT_BINARY_DIR}/Debug/minerva.json)
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/minerva.json
+        ${CMAKE_CURRENT_BINARY_DIR}/Debug/minerva.json
+)

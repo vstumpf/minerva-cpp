@@ -39,5 +39,5 @@ GlShader::~GlShader() {
 }
 
 GLuint GlShader::id() const {
-    return shader_id_; 
+    return shader_id_;
 }

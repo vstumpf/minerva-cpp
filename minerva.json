@@ -1,0 +1,9 @@
+{
+    "graphics": {
+        "fullscreen": false,
+        "window_width": 1600,
+        "window_height": 900,
+        "vsync": true,
+        "msaa": 4
+    }
+}

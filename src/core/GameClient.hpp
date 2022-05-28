@@ -1,5 +1,5 @@
-#ifndef MINERVA_CORE_GAMECLIENT_H_
-#define MINERVA_CORE_GAMECLIENT_H_
+#ifndef MINERVA_CORE_GAMECLIENT_HPP_
+#define MINERVA_CORE_GAMECLIENT_HPP_
 
 
 #define SDL_MAIN_HANDLED
@@ -9,6 +9,7 @@
 #include <memory>
 
 #include <render/Window.hpp>
+#include <core/ModeManager.hpp>
 
 class GameClient {
  public:
@@ -23,8 +24,9 @@ class GameClient {
 
  private:
 	 std::shared_ptr<Window> window_{nullptr};
+   std::shared_ptr<ModeManager> modeManager_{nullptr};
 
-  bool full_screen_{false};
+  bool fullScreen_{false};
   int window_width_{640};
   int window_height_{480};
   bool vsync_{false};
@@ -32,4 +34,4 @@ class GameClient {
   std::string font_folder_{""};
 };
 
-#endif /* MINERVA_CORE_GAMECLIENT_H_ */
+#endif /* MINERVA_CORE_GAMECLIENT_HPP_ */

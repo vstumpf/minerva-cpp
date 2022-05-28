@@ -1,11 +1,13 @@
-#ifndef MINERVA_CORE_WINDOW_H_
-#define MINERVA_CORE_WINDOW_H_
+#ifndef MINERVA_CORE_WINDOW_HPP_
+#define MINERVA_CORE_WINDOW_HPP_
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <memory>
 
 #include "render/Renderer.hpp"
+
+class Renderer; // forward declare
 
 enum class DeviceFlag : int {
 	FULLSCREEN = 0x1,
@@ -14,7 +16,7 @@ enum class DeviceFlag : int {
 
 
 class Window {
-public: 
+public:
 	Window() {};
 	~Window() {
 		if (sdlWindow_) 
@@ -30,14 +32,23 @@ public:
 
 	std::shared_ptr<Renderer> createRenderer();
 
+	uint32_t getWidth() const {
+		return width_;
+	};
+	uint32_t getHeight() const {
+		return height_;
+	};
+
+	void clear(uint32_t color);
+
 private:
 	SDL_Window* sdlWindow_{ nullptr };
 	SDL_GLContext glContext_{ nullptr };
 
-	uint32_t dwRenderWidth_{ 640 };
-	uint32_t dwRenderHeight_{ 480 };
+	uint32_t width_{ 640 };
+	uint32_t height_{ 480 };
 
 	bool isFullscreen_{ false };
 };
 
-#endif /* MINERVA_CORE_WINDOW_H_ */
+#endif /* MINERVA_CORE_WINDOW_HPP_ */
