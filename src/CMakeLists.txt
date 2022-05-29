@@ -80,3 +80,10 @@ add_custom_command(
         ${CMAKE_SOURCE_DIR}/growlithe.bmp
         ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/growlithe.bmp
 )
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/growlithe2.bmp
+        ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/growlithe2.bmp
+)

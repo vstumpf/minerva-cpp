@@ -42,12 +42,19 @@ in vec2 Texcoord;
 
 out vec4 outColor;
 
-uniform sampler2D tex;
+uniform sampler2D texGrowlithe1;
+uniform sampler2D texGrowlithe2;
+
+uniform float time;
 
 void main()
 {
     // outColor = vec4(Color, 1.0);
-	outColor = texture(tex, Texcoord) * vec4(Color, 1.0);
+	// outColor = texture(tex, Texcoord) * vec4(Color, 1.0);
+	vec4 colGrowlithe1 = texture(texGrowlithe1, Texcoord);
+	vec4 colGrowlithe2 = texture(texGrowlithe2, Texcoord);
+	float factor = (sin(time * 3.0) + 1.0) / 2.0;
+	outColor = mix(colGrowlithe1, colGrowlithe2, factor);
 }
 )glsl";
 
@@ -75,7 +82,10 @@ Renderer::Renderer(Window * window, PixelFormat pf) :
 	myVbo_.SetData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
 	myVbo_.Unbind();
 
-	image.Load("growlithe.bmp");
+	image1.Load("growlithe.bmp");
+	image2.Load("growlithe2.bmp");
+
+	startTime_ = std::chrono::high_resolution_clock::now();
 }
 
 bool Renderer::init() {
@@ -183,20 +193,39 @@ void Renderer::drawScene() {
 	glVertexAttribPointer(tex_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
 
 	// Load texture
-    GLuint tex;
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
+    GLuint textures[2];
+    glGenTextures(2, textures);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.GetWidth(), image.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetData());
+	glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image1.GetWidth(), image1.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image1.GetData());
+	glUniform1i(program_.getUniformLocation("texGrowlithe1"), 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, textures[1]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image2.GetWidth(), image2.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image2.GetData());
+	glUniform1i(program_.getUniformLocation("texGrowlithe2"), 1);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	auto now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
+
+	glUniform1f(program_.getUniformLocation("time"), time);
+
 	GLLOG(debug, "draw triangles");
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	auto error = glGetError();
+
+	glDeleteTextures(2, textures);
 
 	GLLOG(debug, gl_error_string(error));
 	GLLOG(debug, "disable layout");

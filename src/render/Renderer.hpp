@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <glm/glm.hpp>
 #include <memory>
+#include <chrono>
 
 #include "render/pixel_format.hpp"
 #include "render/Window.hpp"
@@ -58,7 +59,9 @@ private:
 	GlVBO myVbo_;
 
 	
-	BmpResource image;
+	BmpResource image1;
+	BmpResource image2;
+	decltype(std::chrono::high_resolution_clock::now()) startTime_;
 
 };
 
