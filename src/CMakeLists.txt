@@ -45,6 +45,7 @@ target_link_libraries(${PROJECT_NAME}
     SDL2-static
     glm
     glad
+    stb_image
     spdlog
     nlohmann_json
     SDL2_ttf::SDL2_ttf-static

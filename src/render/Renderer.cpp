@@ -50,9 +50,13 @@ Renderer::Renderer(Window * window, PixelFormat pf) :
 	program_.init({vertexShader_, fragmentShader_});
 
 	std::vector<float> vertices = {
-		0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
-		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+		0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, // Bottom-left
+		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f  // Top-left
 	};
 
 	myVbo_.SetVertexFormat<float>();
@@ -162,7 +166,7 @@ void Renderer::drawScene() {
 	glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
 
 	GLLOG(debug, "draw triangles");
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, myVbo_.size());
 	auto error = glGetError();
 
 	GLLOG(debug, gl_error_string(error));
