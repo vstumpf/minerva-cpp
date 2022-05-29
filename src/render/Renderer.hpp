@@ -10,6 +10,7 @@
 #include "render/GlShader.hpp"
 #include "render/GlProgram.hpp"
 #include "render/GlVBO.hpp"
+#include "files/BmpResource.hpp"
 
 class Window; // forward declare
 
@@ -55,6 +56,9 @@ private:
 	GlShader fragmentShader_;
 	GlProgram program_;
 	GlVBO myVbo_;
+
+	
+	BmpResource image;
 
 };
 

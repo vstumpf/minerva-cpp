@@ -73,3 +73,10 @@ add_custom_command(
         ${CMAKE_SOURCE_DIR}/minerva.json
         ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/minerva.json
 )
+
+add_custom_command(
+    TARGET ${PROJECT_NAME}
+    COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/growlithe.bmp
+        ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/growlithe.bmp
+)

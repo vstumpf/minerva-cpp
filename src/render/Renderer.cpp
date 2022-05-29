@@ -9,6 +9,8 @@
 #include "render/const.hpp"
 #include "render/Window.hpp"
 
+#include "files/BmpResource.hpp"
+
 #include "common/debug.hpp"
 
 #include <glad/glad.h>
@@ -18,12 +20,15 @@ const std::string vertexShaderSource =
 #version 330 core
 in vec2 position;
 in vec3 color;
+in vec2 texcoord;
 
 out vec3 Color;
+out vec2 Texcoord;
 
 void main()
 {
 	Color = color;
+	Texcoord = texcoord;
     gl_Position = vec4(position, 0.0, 1.0);
 }
 )glsl";
@@ -33,11 +38,16 @@ const std::string fragmentShaderSource =
 #version 330 core
 
 in vec3 Color;
+in vec2 Texcoord;
+
 out vec4 outColor;
+
+uniform sampler2D tex;
 
 void main()
 {
-    outColor = vec4(Color, 1.0);
+    // outColor = vec4(Color, 1.0);
+	outColor = texture(tex, Texcoord) * vec4(Color, 1.0);
 }
 )glsl";
 
@@ -50,19 +60,22 @@ Renderer::Renderer(Window * window, PixelFormat pf) :
 	program_.init({vertexShader_, fragmentShader_});
 
 	std::vector<float> vertices = {
-		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-		0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+		//  Position    Color               Texcoords
+		-0.5f,  0.5f,	1.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Top-left
+		0.5f,  0.5f,	0.0f, 1.0f, 0.0f,	1.0f, 0.0f, // Top-right
+		0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	1.0f, 1.0f, // Bottom-right
 
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
-		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f, // Bottom-left
-		-0.5f,  0.5f, 1.0f, 0.0f, 0.0f  // Top-left
+		0.5f, -0.5f,	0.0f, 0.0f, 1.0f,	1.0f, 1.0f, // Bottom-right
+		-0.5f, -0.5f,	1.0f, 1.0f, 1.0f,	0.0f, 1.0f,  // Bottom-left
+		-0.5f,  0.5f,	1.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Top-left
 	};
 
 	myVbo_.SetVertexFormat<float>();
 	myVbo_.Bind();
 	myVbo_.SetData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
 	myVbo_.Unbind();
+
+	image.Load("growlithe.bmp");
 }
 
 bool Renderer::init() {
@@ -159,14 +172,30 @@ void Renderer::drawScene() {
 	GLLOG(debug, "setup layout: {}", position_attrib);
 	const GLuint position_attrib = program_.getAttributeLocation("position");
 	glEnableVertexAttribArray(position_attrib);
-	glVertexAttribPointer(position_attrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+	glVertexAttribPointer(position_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
 
 	const GLuint color_attrib = program_.getAttributeLocation("color");
 	glEnableVertexAttribArray(color_attrib);
-	glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(2 * sizeof(float)));
+	glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(2 * sizeof(float)));
+
+	const GLuint tex_attrib = program_.getAttributeLocation("texcoord");
+	glEnableVertexAttribArray(tex_attrib);
+	glVertexAttribPointer(tex_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
+
+	// Load texture
+    GLuint tex;
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.GetWidth(), image.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetData());
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	GLLOG(debug, "draw triangles");
-	glDrawArrays(GL_TRIANGLES, 0, myVbo_.size());
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	auto error = glGetError();
 
 	GLLOG(debug, gl_error_string(error));

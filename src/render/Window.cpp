@@ -88,14 +88,14 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 	// 	return -1;
 	// }
 
-	glEnable(GL_BLEND);
-	if (glGetError() != GL_NO_ERROR) {
-		return -1;
-	}
+	// glEnable(GL_BLEND);
+	// if (glGetError() != GL_NO_ERROR) {
+	// 	return -1;
+	// }
 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// // Bind a dummy vao to comply with core profile's specifications
+	// Bind a dummy vao to comply with core profile's specifications
 	GLuint dummy_vao;
 	glGenVertexArrays(1, &dummy_vao);
 	glBindVertexArray(dummy_vao);
