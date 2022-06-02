@@ -1,5 +1,7 @@
 #include "render/GlProgram.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 
 GlProgram::GlProgram() : program_id_() {}
@@ -52,3 +54,33 @@ GLuint GlProgram::getAttributeLocation(
     const std::string& attribute_name) const {
   return glGetAttribLocation(program_id_, attribute_name.c_str());
 }
+
+template<>
+void GlProgram::setUniform<int>(const std::string& uniform_name, int val) {
+  auto loc = getUniformLocation(uniform_name);
+  glUniform1i(loc, val);
+}
+
+template<>
+void GlProgram::setUniform<float>(const std::string& uniform_name, float val) {
+  auto loc = getUniformLocation(uniform_name);
+  glUniform1f(loc, val);
+}
+
+template<>
+void GlProgram::setUniform<bool>(const std::string& uniform_name, bool val) {
+  auto loc = getUniformLocation(uniform_name);
+  glUniform1i(loc, val);
+}
+
+template<>
+void GlProgram::setUniform<glm::mat4>(const std::string& uniform_name, glm::mat4 val) {
+  auto loc = getUniformLocation(uniform_name);
+  glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(val));
+}
+
+// template<>
+// void GlProgram::setUniform<bool>(const std::string& uniform_name, bool val) {
+//   auto loc = getUniformLocation(uniform_name);
+//   glUniform1i(loc, val);
+// }

@@ -219,7 +219,7 @@ void Renderer::drawScene() {
 	auto now = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
 
-	glUniform1f(program_.getUniformLocation("time"), time);
+	program_.setUniform("time", time);
 
 	GLLOG(debug, "draw triangles");
 	glDrawArrays(GL_TRIANGLES, 0, 6);
