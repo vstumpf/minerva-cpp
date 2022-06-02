@@ -18,9 +18,9 @@
 const std::string vertexShaderSource = 
 	R"glsl(
 #version 330 core
-in vec2 position;
-in vec3 color;
-in vec2 texcoord;
+layout (location = 0) in vec2 position;
+layout (location = 1) in vec3 color;
+layout (location = 2) in vec2 texcoord;
 
 out vec3 Color;
 out vec2 Texcoord;
@@ -179,18 +179,15 @@ void Renderer::drawScene() {
 	myVbo_.Bind();
 
 	// Setup layout of vertex data
-	GLLOG(debug, "setup layout: {}", position_attrib);
-	const GLuint position_attrib = program_.getAttributeLocation("position");
-	glEnableVertexAttribArray(position_attrib);
-	glVertexAttribPointer(position_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	GLLOG(debug, "setup layout");
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
 
-	const GLuint color_attrib = program_.getAttributeLocation("color");
-	glEnableVertexAttribArray(color_attrib);
-	glVertexAttribPointer(color_attrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
-	const GLuint tex_attrib = program_.getAttributeLocation("texcoord");
-	glEnableVertexAttribArray(tex_attrib);
-	glVertexAttribPointer(tex_attrib, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	// Load texture
     GLuint textures[2];
@@ -229,7 +226,6 @@ void Renderer::drawScene() {
 
 	GLLOG(debug, gl_error_string(error));
 	GLLOG(debug, "disable layout");
-	glDisableVertexAttribArray(position_attrib);
 	GLLOG(debug, "unbind vbo");
 	myVbo_.Unbind();
 	GLLOG(debug, "unbind program");
