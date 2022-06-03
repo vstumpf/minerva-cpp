@@ -22,6 +22,8 @@ layout (location = 0) in vec2 position;
 layout (location = 1) in vec3 color;
 layout (location = 2) in vec2 texcoord;
 
+uniform mat4 transform;
+
 out vec3 Color;
 out vec2 Texcoord;
 
@@ -29,7 +31,7 @@ void main()
 {
 	Color = color;
 	Texcoord = texcoord;
-    gl_Position = vec4(position, 0.0, 1.0);
+    gl_Position = transform * vec4(position, 0.0, 1.0);
 }
 )glsl";
 
@@ -171,6 +173,8 @@ char const* gl_error_string(GLenum const err) noexcept
 
 
 void Renderer::drawScene() {
+	auto now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
 
 	GLLOG(debug, "start drawScene");
 	program_.bind();
@@ -189,6 +193,13 @@ void Renderer::drawScene() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
+	glm::mat4 transform = glm::mat4(1.0f);
+	transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+	transform = glm::rotate(transform, time, glm::vec3(0.0, 0.0, 1.0));
+	// transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
+
+	program_.setUniform("transform", transform);
+	
 	// Load texture
     GLuint textures[2];
     glGenTextures(2, textures);
@@ -212,9 +223,6 @@ void Renderer::drawScene() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	auto now = std::chrono::high_resolution_clock::now();
-	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
 
 	program_.setUniform("time", time);
 
