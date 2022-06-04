@@ -6,6 +6,7 @@
 #include <memory>
 #include <chrono>
 
+#include "render/Camera.hpp"
 #include "render/pixel_format.hpp"
 #include "render/Window.hpp"
 #include "render/GlShader.hpp"
@@ -22,9 +23,14 @@ public:
 	bool init();
 	void setSize(uint32_t cx, uint32_t cy);
 
-	void drawScene();
+	void drawScene(const Camera& camera);
 	void flip();
 	void clear();
+
+	glm::vec3 cameraPos{1.f};
+	glm::vec3 cameraFront{1.f};
+	glm::vec3 cameraUp{1.f};
+	float cameraSpeed{0.05f};
 
 private:
 	Window * window_{nullptr};
@@ -58,10 +64,10 @@ private:
 	GlProgram program_;
 	GlVBO myVbo_;
 
-	
 	BmpResource image1;
 	BmpResource image2;
 	decltype(std::chrono::high_resolution_clock::now()) startTime_;
+
 
 };
 

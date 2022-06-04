@@ -15,3 +15,7 @@ void Mode::setShouldLoop(bool shouldLoop) {
 	shouldLoop_ = shouldLoop;
 }
 
+
+const Camera& Mode::getCamera() const {
+	return camera;
+}

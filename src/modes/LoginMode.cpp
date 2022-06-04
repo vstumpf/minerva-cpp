@@ -100,8 +100,23 @@ int LoginMode::run() {
 				setShouldLoop(false);
 				break;
 			case SDL_KEYUP:
-				if (windowEvent.key.keysym.sym == SDLK_ESCAPE)
+				switch (windowEvent.key.keysym.sym) {
+				case SDLK_ESCAPE:
 					setShouldLoop(false);
+					break;
+				case SDLK_w:
+					renderer_->cameraPos += renderer_->cameraSpeed * renderer_->cameraFront;
+					break;
+				case SDLK_s:
+					renderer_->cameraPos -= renderer_->cameraSpeed * renderer_->cameraFront;
+					break;
+				case SDLK_a:
+					renderer_->cameraPos -= glm::normalize(glm::cross(renderer_->cameraFront, renderer_->cameraUp)) * renderer_->cameraSpeed;
+					break;
+				case SDLK_d:
+					renderer_->cameraPos += glm::normalize(glm::cross(renderer_->cameraFront, renderer_->cameraUp)) * renderer_->cameraSpeed;
+					break;
+				}
 				break;
 			}
 		}
@@ -167,6 +182,6 @@ void LoginMode::update() {
 	// renderer_->flip();
 
 	renderer_->clear();
-	renderer_->drawScene();
+	renderer_->drawScene(getCamera());
 	renderer_->flip();
 }

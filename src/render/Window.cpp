@@ -135,5 +135,5 @@ void Window::clear(uint32_t color) {
 	g = ((color >> 8) & 0xFF) / 255.f;
 	b = ((color)&0xFF) / 255.f;
 	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

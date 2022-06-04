@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "render/Renderer.hpp"
+#include "render/Camera.hpp"
 
 enum class ModeType {
 	LOGIN,
@@ -20,12 +21,14 @@ public:
 
 	bool getShouldLoop() const;
 	void setShouldLoop(bool shouldLoop);
+	const Camera& Mode::getCamera() const;
 
 protected:
 	std::shared_ptr<Renderer> renderer_{nullptr};
 
 private:
 	bool shouldLoop_{ true };
+	Camera camera{};
 };
 
 

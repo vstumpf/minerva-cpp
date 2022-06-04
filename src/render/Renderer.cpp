@@ -22,7 +22,9 @@ layout (location = 0) in vec2 position;
 layout (location = 1) in vec3 color;
 layout (location = 2) in vec2 texcoord;
 
-uniform mat4 transform;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 out vec3 Color;
 out vec2 Texcoord;
@@ -31,7 +33,7 @@ void main()
 {
 	Color = color;
 	Texcoord = texcoord;
-    gl_Position = transform * vec4(position, 0.0, 1.0);
+    gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
 }
 )glsl";
 
@@ -88,6 +90,18 @@ Renderer::Renderer(Window * window, PixelFormat pf) :
 	image2.Load("growlithe2.bmp");
 
 	startTime_ = std::chrono::high_resolution_clock::now();
+
+	cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
+	cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
+
+	float yaw = -90.f, pitch = 7.f;
+	glm::vec3 direction;
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+
+	cameraFront = glm::normalize(direction);
+
 }
 
 bool Renderer::init() {
@@ -172,7 +186,7 @@ char const* gl_error_string(GLenum const err) noexcept
 }
 
 
-void Renderer::drawScene() {
+void Renderer::drawScene(const Camera& camera) {
 	auto now = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
 
@@ -193,13 +207,17 @@ void Renderer::drawScene() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
-	glm::mat4 transform = glm::mat4(1.0f);
-	transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
-	transform = glm::rotate(transform, time, glm::vec3(0.0, 0.0, 1.0));
-	// transform = glm::scale(transform, glm::vec3(0.5, 0.5, 0.5));
 
-	program_.setUniform("transform", transform);
-	
+	auto model = glm::mat4(1.0f);
+	// model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
+	program_.setUniform("model", model);
+
+	auto view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	program_.setUniform("view", view);
+
+	auto projection = glm::perspective(glm::radians(45.f), width_ / static_cast<float>(height_), 0.1f, 100.f);
+	program_.setUniform("projection", projection);
+
 	// Load texture
     GLuint textures[2];
     glGenTextures(2, textures);
