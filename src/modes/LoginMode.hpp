@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include "modes/Mode.hpp"
 
 #include "render/Renderer.hpp"
@@ -18,6 +20,9 @@ public:
 	void exit() override;
 
 	void update();
+
+private:
+	glm::vec3 playerPos{0.f, 0.f, 0.f};
 };
 
 #endif // MINERVA_MODES_LOGINMODE_HPP_

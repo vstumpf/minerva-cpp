@@ -21,7 +21,7 @@ public:
 
 	bool getShouldLoop() const;
 	void setShouldLoop(bool shouldLoop);
-	const Camera& Mode::getCamera() const;
+	Camera& Mode::getCamera();
 
 protected:
 	std::shared_ptr<Renderer> renderer_{nullptr};

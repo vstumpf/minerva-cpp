@@ -5,6 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/vec3.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "render/const.hpp"
 #include "render/Window.hpp"
@@ -33,7 +34,7 @@ void main()
 {
 	Color = color;
 	Texcoord = texcoord;
-    gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+    gl_Position = projection * view * model * vec4(position.x, 0.0, position.y, 1.0);
 }
 )glsl";
 
@@ -209,14 +210,13 @@ void Renderer::drawScene(const Camera& camera) {
 
 
 	auto model = glm::mat4(1.0f);
-	// model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
+	model = glm::scale(model, glm::vec3(10.f, 0.f, 10.f));
+	// model = glm::translate(model, glm::vec3(0.f, 0.f, -10.f));
 	program_.setUniform("model", model);
 
-	auto view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	program_.setUniform("view", view);
+	program_.setUniform("view", camera.GetViewMatrix());
 
-	auto projection = glm::perspective(glm::radians(45.f), width_ / static_cast<float>(height_), 0.1f, 100.f);
-	program_.setUniform("projection", projection);
+	program_.setUniform("projection", projectionMatrix_);
 
 	// Load texture
     GLuint textures[2];

@@ -30,7 +30,7 @@ public:
 	glm::vec3 cameraPos{1.f};
 	glm::vec3 cameraFront{1.f};
 	glm::vec3 cameraUp{1.f};
-	float cameraSpeed{0.05f};
+	float cameraSpeed{1.05f};
 
 private:
 	Window * window_{nullptr};

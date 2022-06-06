@@ -92,6 +92,8 @@ int LoginMode::run() {
 	// glDeleteShader(fragmentShader);
 	// glDeleteShader(vertexShader);
 
+	getCamera().reset();
+
 	SDL_Event windowEvent;
 	while (getShouldLoop()) {
 		if (SDL_PollEvent(&windowEvent)) {
@@ -105,16 +107,30 @@ int LoginMode::run() {
 					setShouldLoop(false);
 					break;
 				case SDLK_w:
-					renderer_->cameraPos += renderer_->cameraSpeed * renderer_->cameraFront;
+					// renderer_->cameraPos += renderer_->cameraSpeed * renderer_->cameraFront;
+					getCamera().AddLatitude(5.f);
 					break;
 				case SDLK_s:
-					renderer_->cameraPos -= renderer_->cameraSpeed * renderer_->cameraFront;
+					// renderer_->cameraPos -= renderer_->cameraSpeed * renderer_->cameraFront;
+					getCamera().AddLatitude(-5.f);
 					break;
 				case SDLK_a:
-					renderer_->cameraPos -= glm::normalize(glm::cross(renderer_->cameraFront, renderer_->cameraUp)) * renderer_->cameraSpeed;
+					getCamera().AddLongitude(5.f);
 					break;
 				case SDLK_d:
-					renderer_->cameraPos += glm::normalize(glm::cross(renderer_->cameraFront, renderer_->cameraUp)) * renderer_->cameraSpeed;
+					getCamera().AddLongitude(-5.f);
+					break;
+				case SDLK_UP:
+					playerPos.y += 1;
+					break;
+				case SDLK_DOWN:
+					playerPos.y -= 1;
+					break;
+				case SDLK_LEFT:
+					playerPos.x -= 1;
+					break;
+				case SDLK_RIGHT:
+					playerPos.x += 1;
 					break;
 				}
 				break;
@@ -182,6 +198,7 @@ void LoginMode::update() {
 	// renderer_->flip();
 
 	renderer_->clear();
+	getCamera().OnCalcViewInfo(playerPos);
 	renderer_->drawScene(getCamera());
 	renderer_->flip();
 }
