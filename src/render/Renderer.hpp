@@ -65,8 +65,7 @@ private:
 	GlProgram spriteProgram_;
 	GlVBO myVbo_;
 
-	BmpResource image1;
-	BmpResource image2;
+	BmpResource groundTexture;
 	decltype(std::chrono::high_resolution_clock::now()) startTime_;
 
 

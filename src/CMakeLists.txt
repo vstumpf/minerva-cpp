@@ -13,7 +13,7 @@ add_executable(
 
 set_target_properties(
     ${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 14
+    CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
     COMPILE_FLAGS "${WARNING_FLAGS}"
 )
@@ -76,14 +76,7 @@ add_custom_command(
 
 add_custom_command(
     TARGET ${PROJECT_NAME}
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/growlithe.bmp
-        ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/growlithe.bmp
-)
-
-add_custom_command(
-    TARGET ${PROJECT_NAME}
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/growlithe2.bmp
-        ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/growlithe2.bmp
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets
+        ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/assets
 )

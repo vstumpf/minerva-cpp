@@ -33,17 +33,11 @@ in vec2 Texcoord;
 
 out vec4 outColor;
 
-uniform sampler2D texGrowlithe1;
-uniform sampler2D texGrowlithe2;
-
-uniform float time;
+uniform sampler2D uTexture;
 
 void main()
 {
-	vec4 colGrowlithe1 = texture(texGrowlithe1, Texcoord);
-	vec4 colGrowlithe2 = texture(texGrowlithe2, Texcoord);
-	float factor = (sin(time * 3.0) + 1.0) / 2.0;
-	outColor = mix(colGrowlithe1, colGrowlithe2, factor);
+	outColor = texture(uTexture, Texcoord);
 }
 )glsl";
 
