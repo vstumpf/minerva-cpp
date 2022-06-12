@@ -107,11 +107,9 @@ int LoginMode::run() {
 					setShouldLoop(false);
 					break;
 				case SDLK_w:
-					// renderer_->cameraPos += renderer_->cameraSpeed * renderer_->cameraFront;
 					getCamera().AddLatitude(5.f);
 					break;
 				case SDLK_s:
-					// renderer_->cameraPos -= renderer_->cameraSpeed * renderer_->cameraFront;
 					getCamera().AddLatitude(-5.f);
 					break;
 				case SDLK_a:
