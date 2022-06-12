@@ -11,6 +11,8 @@
 #include <render/Window.hpp>
 #include <core/ModeManager.hpp>
 
+namespace minerva {
+
 class GameClient {
  public:
   GameClient();
@@ -33,5 +35,7 @@ class GameClient {
   unsigned int msaa_{0};
   std::string font_folder_{""};
 };
+
+}
 
 #endif /* MINERVA_CORE_GAMECLIENT_HPP_ */

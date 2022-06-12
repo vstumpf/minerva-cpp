@@ -61,7 +61,8 @@ private:
 
 	GlShader vertexShader_;
 	GlShader fragmentShader_;
-	GlProgram program_;
+	GlProgram groundProgram_;
+	GlProgram spriteProgram_;
 	GlVBO myVbo_;
 
 	BmpResource image1;

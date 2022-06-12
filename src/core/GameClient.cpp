@@ -14,6 +14,8 @@
 
 #include "render/Window.hpp"
 
+namespace minerva {
+
 GameClient::GameClient() {}
 
 GameClient::~GameClient() {
@@ -80,4 +82,6 @@ bool GameClient::LoadConfiguration(const std::string& file_name) {
   LOG(debug, "Anti-aliasing: MSAA {}x", msaa_);
 
   return true;
+}
+
 }

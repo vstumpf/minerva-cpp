@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
   spdlog::get(MINERVA_GL_LOGGER_NAME)->set_level(spdlog::level::debug);
 #endif
 
-  GameClient game;
+  minerva::GameClient game;
 
   if (!game.Initialize()) {
     return EXIT_FAILURE;
