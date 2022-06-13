@@ -1,4 +1,4 @@
-#include "GroundShader.hpp"
+#include "SurfaceShader.hpp"
 
 namespace minerva::render::shaders {
 

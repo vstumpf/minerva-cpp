@@ -6,6 +6,8 @@
 #include "render/Renderer.hpp"
 #include "render/Camera.hpp"
 
+using minerva::render::Renderer;
+
 enum class ModeType {
 	LOGIN,
 };

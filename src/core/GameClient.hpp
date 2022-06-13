@@ -25,7 +25,7 @@ class GameClient {
   bool LoadConfiguration(const std::string& file_name);
 
  private:
-	 std::shared_ptr<Window> window_{nullptr};
+	 std::shared_ptr<render::Window> window_{nullptr};
    std::shared_ptr<ModeManager> modeManager_{nullptr};
 
   bool fullScreen_{false};

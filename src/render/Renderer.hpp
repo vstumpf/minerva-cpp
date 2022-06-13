@@ -14,6 +14,8 @@
 #include "render/GlVBO.hpp"
 #include "files/BmpResource.hpp"
 
+namespace minerva::render {
+
 class Window; // forward declare
 
 class Renderer {
@@ -31,6 +33,10 @@ public:
 	glm::vec3 cameraFront{1.f};
 	glm::vec3 cameraUp{1.f};
 	float cameraSpeed{1.05f};
+
+private:
+	void drawSurfaces();
+	void drawGround(const Camera& camera);
 
 private:
 	Window * window_{nullptr};
@@ -62,13 +68,18 @@ private:
 	GlShader vertexShader_;
 	GlShader fragmentShader_;
 	GlProgram groundProgram_;
-	GlProgram spriteProgram_;
+	GlProgram surfaceProgram_;
 	GlVBO myVbo_;
 
-	BmpResource groundTexture;
+	GlVBO surfaceVbo_;
+
+	BmpResource groundTexture_;
+	BmpResource growlitheTexture_;
+	BmpResource charInfoTexture_;
+	
 	decltype(std::chrono::high_resolution_clock::now()) startTime_;
-
-
 };
+
+}
 
 #endif /* MINERVA_CORE_WINDOW_HPP_ */

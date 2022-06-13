@@ -10,6 +10,7 @@
 
 #include "render/Renderer.hpp"
 
+using minerva::render::Renderer;
 
 class LoginMode : public Mode {
 public:

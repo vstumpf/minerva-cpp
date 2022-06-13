@@ -24,10 +24,10 @@ GameClient::~GameClient() {
 
 bool GameClient::Initialize() {
 	LoadConfiguration("minerva.json");
-    window_ = std::make_shared<Window>();
+    window_ = std::make_shared<render::Window>();
 
-    const uint32_t flags = (fullScreen_ ? static_cast<int>(DeviceFlag::FULLSCREEN) : 0) |
-        (vsync_ ? static_cast<int>(DeviceFlag::VSYNC) : 0);
+    const uint32_t flags = (fullScreen_ ? static_cast<int>(render::DeviceFlag::FULLSCREEN) : 0) |
+        (vsync_ ? static_cast<int>(render::DeviceFlag::VSYNC) : 0);
 
 
     window_->init(window_width_, window_height_, msaa_, flags);

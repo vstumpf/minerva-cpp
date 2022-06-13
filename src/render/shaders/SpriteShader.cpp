@@ -9,9 +9,11 @@ layout (location = 0) in vec2 position;
 layout (location = 1) in vec3 color;
 layout (location = 2) in vec2 texcoord;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 uModelViewMat;
+uniform mat4 uViewModelMat;
+uniform mat4 uProjectionMat;
+
+uniform float uCameraLatitude;
 
 out vec3 Color;
 out vec2 Texcoord;

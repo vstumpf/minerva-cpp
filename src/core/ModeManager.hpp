@@ -9,6 +9,8 @@
 #include "modes/Mode.hpp"
 #include "modes/LoginMode.hpp"
 
+using minerva::render::Renderer;
+
 class ModeManager {
 public:
 	ModeManager(ModeType mode_type, const std::string& map_name, std::shared_ptr<Renderer> renderer);

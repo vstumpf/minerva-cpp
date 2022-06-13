@@ -7,6 +7,8 @@
 
 #include "render/Renderer.hpp"
 
+namespace minerva::render {
+
 class Renderer; // forward declare
 
 enum class DeviceFlag : int {
@@ -50,5 +52,6 @@ private:
 
 	bool isFullscreen_{ false };
 };
+}
 
 #endif /* MINERVA_CORE_WINDOW_HPP_ */

@@ -6,6 +6,7 @@
 
 #include "render/pixel_format.hpp"
 
+namespace minerva::render {
 
 int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_t dwFlags) {
 	isFullscreen_ = (dwFlags & static_cast<int>(DeviceFlag::FULLSCREEN));
@@ -136,4 +137,6 @@ void Window::clear(uint32_t color) {
 	b = ((color)&0xFF) / 255.f;
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 }
