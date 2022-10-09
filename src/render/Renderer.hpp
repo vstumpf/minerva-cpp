@@ -36,6 +36,7 @@ public:
 
 private:
 	void drawSurfaces();
+	void drawSprites(const Camera& camera);
 	void drawGround(const Camera& camera);
 
 private:
@@ -69,6 +70,7 @@ private:
 	GlShader fragmentShader_;
 	GlProgram groundProgram_;
 	GlProgram surfaceProgram_;
+	GlProgram spriteProgram_;
 	GlVBO myVbo_;
 
 	GlVBO surfaceVbo_;

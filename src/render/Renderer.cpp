@@ -22,53 +22,6 @@
 
 namespace minerva::render {
 
-const std::string vertexShaderSource = 
-	R"glsl(
-#version 330 core
-layout (location = 0) in vec2 position;
-layout (location = 1) in vec3 color;
-layout (location = 2) in vec2 texcoord;
-
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
-out vec3 Color;
-out vec2 Texcoord;
-
-void main()
-{
-	Color = color;
-	Texcoord = texcoord;
-    gl_Position = projection * view * model * vec4(position.x, 0.0, position.y, 1.0);
-}
-)glsl";
-
-const std::string fragmentShaderSource = 
-	R"glsl(
-#version 330 core
-
-in vec3 Color;
-in vec2 Texcoord;
-
-out vec4 outColor;
-
-uniform sampler2D texGrowlithe1;
-uniform sampler2D texGrowlithe2;
-
-uniform float time;
-
-void main()
-{
-    // outColor = vec4(Color, 1.0);
-	// outColor = texture(tex, Texcoord) * vec4(Color, 1.0);
-	vec4 colGrowlithe1 = texture(texGrowlithe1, Texcoord);
-	vec4 colGrowlithe2 = texture(texGrowlithe2, Texcoord);
-	float factor = (sin(time * 3.0) + 1.0) / 2.0;
-	outColor = mix(colGrowlithe1, colGrowlithe2, factor);
-}
-)glsl";
-
 Renderer::Renderer(Window * window, PixelFormat pf) :
 	window_(window),
 	pf_(pf),
@@ -81,6 +34,11 @@ Renderer::Renderer(Window * window, PixelFormat pf) :
 	auto surfaceFragmentShader = GlShader(shaders::kSurfaceFragmentShader, GL_FRAGMENT_SHADER);
 
 	surfaceProgram_.init({surfaceVertexShader, surfaceFragmentShader});
+
+	auto spriteVertexShader = GlShader(shaders::kSpriteVertexShader, GL_VERTEX_SHADER);
+	auto spriteFragmentShader = GlShader(shaders::kSpriteFragmentShader, GL_FRAGMENT_SHADER);
+
+	spriteProgram_.init({spriteVertexShader, spriteFragmentShader});
 
 	std::vector<float> vertices = {
 		//  Position    Color               Texcoords
@@ -213,6 +171,12 @@ char const* gl_error_string(GLenum const err) noexcept
   }
 }
 
+void Renderer::drawScene(const Camera& camera) {
+	drawGround(camera);
+	drawSprites(camera);
+	drawSurfaces();
+}
+
 void Renderer::drawGround(const Camera& camera) {
 	auto now = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
@@ -251,7 +215,7 @@ void Renderer::drawGround(const Camera& camera) {
 	glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures[0]);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, groundTexture_.GetWidth(), groundTexture_.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, groundTexture_.GetData());
-	glUniform1i(groundProgram_.getUniformLocation("uTexture"), 0);
+	groundProgram_.setUniform("uTexture", 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -271,14 +235,61 @@ void Renderer::drawGround(const Camera& camera) {
 	myVbo_.Unbind();
 	GLLOG(debug, "unbind program");
 	groundProgram_.unbind();
-
 }
 
+void Renderer::drawSprites(const Camera& camera) {
+	auto now = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration_cast<std::chrono::duration<float>>(now - startTime_).count();
 
-void Renderer::drawScene(const Camera& camera) {
+	GLLOG(debug, "start drawScene");
+	spriteProgram_.bind();
 
-	drawGround(camera);
-	drawSurfaces();
+	GLLOG(debug, "bind vbo");
+	myVbo_.Bind();
+
+	// Setup layout of vertex data
+	GLLOG(debug, "setup layout");
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	spriteProgram_.setUniform("uModelViewMat", camera.GetViewMatrix());
+	spriteProgram_.setUniform("uProjectionMat", projectionMatrix_);
+
+	spriteProgram_.setUniform("uCameraLatitude", camera.getCurrentLatitude());
+
+	// Load texture
+    GLuint textures[1];
+    glGenTextures(1, textures);
+
+	glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, growlitheTexture_.GetWidth(), growlitheTexture_.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, growlitheTexture_.GetData());
+	spriteProgram_.setUniform("uTexture", 0);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+	GLLOG(debug, "draw triangles");
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	auto error = glGetError();
+
+	glDeleteTextures(1, textures);
+
+	GLLOG(debug, gl_error_string(error));
+	GLLOG(debug, "disable layout");
+	GLLOG(debug, "unbind vbo");
+	myVbo_.Unbind();
+	GLLOG(debug, "unbind program");
+	spriteProgram_.unbind();
 }
 
 void Renderer::drawSurfaces() {

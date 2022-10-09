@@ -19,7 +19,7 @@ class GlProgram {
   GLuint getAttributeLocation(const std::string& attribute_name) const;
 
   template <class T>
-  void setUniform(const std::string& uniform_name, T val);
+  void setUniform(const std::string& uniform_name, const T& val);
 
  private:
   // Disable object copy

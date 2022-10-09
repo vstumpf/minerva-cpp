@@ -24,6 +24,10 @@ void Camera::AddLatitude(float delta) {
 	m_cur.latitude += delta;
 }
 
+void Camera::AddDistance(float delta) {
+	m_cur.distance += delta;
+}
+
 const glm::mat4& Camera::GetInvViewMatrix() const {
 	return m_inv_view_matrix;
 }

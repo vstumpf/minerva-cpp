@@ -101,6 +101,13 @@ int LoginMode::run() {
 			case SDL_QUIT:
 				setShouldLoop(false);
 				break;
+			case SDL_MOUSEWHEEL:
+				if (windowEvent.wheel.y > 0) {
+					getCamera().AddDistance(-5.f);
+				} else if (windowEvent.wheel.y < 0) {
+					getCamera().AddDistance(5.f);
+				}
+				break;
 			case SDL_KEYUP:
 				switch (windowEvent.key.keysym.sym) {
 				case SDLK_ESCAPE:

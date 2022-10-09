@@ -56,25 +56,25 @@ GLuint GlProgram::getAttributeLocation(
 }
 
 template<>
-void GlProgram::setUniform<int>(const std::string& uniform_name, int val) {
+void GlProgram::setUniform<int>(const std::string& uniform_name, const int& val) {
   auto loc = getUniformLocation(uniform_name);
   glUniform1i(loc, val);
 }
 
 template<>
-void GlProgram::setUniform<float>(const std::string& uniform_name, float val) {
+void GlProgram::setUniform<float>(const std::string& uniform_name, const float& val) {
   auto loc = getUniformLocation(uniform_name);
   glUniform1f(loc, val);
 }
 
 template<>
-void GlProgram::setUniform<bool>(const std::string& uniform_name, bool val) {
+void GlProgram::setUniform<bool>(const std::string& uniform_name, const bool& val) {
   auto loc = getUniformLocation(uniform_name);
   glUniform1i(loc, val);
 }
 
 template<>
-void GlProgram::setUniform<glm::mat4>(const std::string& uniform_name, glm::mat4 val) {
+void GlProgram::setUniform<glm::mat4>(const std::string& uniform_name, const glm::mat4& val) {
   auto loc = getUniformLocation(uniform_name);
   glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(val));
 }
