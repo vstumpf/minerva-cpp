@@ -13,14 +13,16 @@ layout (location = 2) in vec2 aTextureCoord;
 
     uniform float uCameraLatitude;
 
+    uniform vec3 uSpriteRendererPosition;
+
     out vec2 Texcoord;
 
 	// these are uniforms, but make them here because we don't support them yet
-	vec3 uSpriteRendererPosition = vec3(0.f, 0.f, 0.f);
-	vec2 uSpriteRendererSize = vec2(1.0f, 1.0f);
-	// uSpriteRendererSize = vec2(314.f / 35.f, 277.f / 35.f - 0.f);
-	vec2 uSpriteRendererOffset = vec2(0.f, 0.f);
-	// uSpriteRendererOffset = vec2(0.f, -2.f);
+	// vec3 uSpriteRendererPosition = vec3(0.f, 0.f, 0.f);
+	// vec2 uSpriteRendererSize = vec2(1.0f, 1.0f);
+	vec2 uSpriteRendererSize = vec2(314.f / 35.f, 277.f / 35.f);
+	vec2 uSpriteRendererOffset = vec2(0.f, 0.f - .5);
+	// uSpriteRendererOffset = vec2(0.f, -.5f);
 	mat4 uSpriteRendererAngle = mat4(1.f);
 
 	float uSpriteRendererDepth = 0.f;
@@ -39,8 +41,10 @@ layout (location = 2) in vec2 aTextureCoord;
         mat[3].w += mat[0].w * x + mat[1].w * y + mat[2].w * z;
 
         // Spherical billboard
+        // https://stackoverflow.com/a/15924964/8390887
         mat[0].xyz = vec3(1.0, 0.0, 0.0);
-        mat[1].xyz = vec3(0.0, 1.0 + 0.5 / uCameraLatitude, uCameraLatitude / 50.0);
+        // mat[1].xyz = vec3(0.0, 1.0 + 0.5 / uCameraLatitude, uCameraLatitude / 50.0);
+        mat[1].xyz = vec3(0.0, 1.0, 0.0);
         mat[2].xyz = vec3(0.0, 0.0, 1.0);
 
         return mat;

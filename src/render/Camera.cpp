@@ -37,7 +37,7 @@ const glm::mat4& Camera::GetViewMatrix() const {
 }
 
 void Camera::reset() {
-	m_cur.distance = 10.f;
+	m_cur.distance = 300.f;
 	m_cur.longitude = 0.f;
 	m_cur.latitude = 225.f;
 	m_cur.at = glm::vec3(0.f);

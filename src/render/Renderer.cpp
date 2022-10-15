@@ -263,6 +263,14 @@ void Renderer::drawSprites(const Camera& camera) {
 
 	spriteProgram_.setUniform("uCameraLatitude", camera.getCurrentLatitude());
 
+	auto pos = glm::vec3(0.f, 0.f, 0.f);
+	// int currentTick = SDL_GetTicks();
+	// pos.x = static_cast<float>(currentTick % 4000) / 1000.f - 2;
+	// pos.y = static_cast<float>(currentTick % 4000) / 1000.f - 2;
+	// pos.z = 1;
+
+	spriteProgram_.setUniform("uSpriteRendererPosition", pos);
+
 	// Load texture
     GLuint textures[1];
     glGenTextures(1, textures);

@@ -79,6 +79,12 @@ void GlProgram::setUniform<glm::mat4>(const std::string& uniform_name, const glm
   glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(val));
 }
 
+template<>
+void GlProgram::setUniform<glm::vec3>(const std::string& uniform_name, const glm::vec3& val) {
+  auto loc = getUniformLocation(uniform_name);
+  glUniform3fv(loc, 1, glm::value_ptr(val));
+}
+
 // template<>
 // void GlProgram::setUniform<bool>(const std::string& uniform_name, bool val) {
 //   auto loc = getUniformLocation(uniform_name);
