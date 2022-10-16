@@ -13,7 +13,7 @@ GlVBO::~GlVBO() {
   }
 }
 
-int GlVBO::size() const {
+size_t GlVBO::size() const {
   return size_;
 }
 

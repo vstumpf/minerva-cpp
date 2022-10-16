@@ -10,7 +10,7 @@ class GlVBO {
   GlVBO();
   ~GlVBO();
 
-  int size() const;
+  size_t size() const;
 
   template <class T>
   inline void SetVertexFormat() {
