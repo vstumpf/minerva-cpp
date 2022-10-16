@@ -2,8 +2,7 @@
 
 #include "modes/Mode.hpp"
 
-Mode::Mode(std::shared_ptr<Renderer> renderer)
-	: renderer_(renderer) {
+Mode::Mode() {
 
 }
 

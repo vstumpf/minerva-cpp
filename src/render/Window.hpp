@@ -32,7 +32,7 @@ public:
 
 	void drawFrame();
 
-	std::shared_ptr<Renderer> createRenderer();
+	Renderer * createRenderer();
 
 	uint32_t getWidth() const {
 		return width_;

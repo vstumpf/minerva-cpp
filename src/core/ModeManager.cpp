@@ -2,17 +2,15 @@
 
 ModeManager::ModeManager(
 	ModeType mode_type,
-	const std::string& map_name,
-	std::shared_ptr<Renderer> renderer)
+	const std::string& map_name)
 	:	currentModeType_(mode_type),
-	currentModeName_(map_name),
-	renderer_(renderer)
+	currentModeName_(map_name)
 {
 
 }
 
 void ModeManager::run() {
-	currentMode_ = new LoginMode(renderer_);
+	currentMode_ = new LoginMode();
 	currentMode_->run();
 	delete currentMode_;
 }

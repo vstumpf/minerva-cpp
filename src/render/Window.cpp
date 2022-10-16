@@ -104,9 +104,9 @@ int Window::init(uint32_t width, uint32_t height, uint32_t msaa_samples, uint32_
 	return 0;
 }
 
-std::shared_ptr<Renderer> Window::createRenderer() {
+Renderer * Window::createRenderer() {
 	try {
-		auto renderer = std::make_shared<Renderer>(this);
+		auto renderer = new Renderer(this);
 		return renderer;
 	}
 	catch (std::exception e) {

@@ -2,9 +2,10 @@
 
 #include <SDL.h>
 #include "common/debug.hpp"
+#include "common/globals.hpp"
 
-LoginMode::LoginMode(std::shared_ptr<Renderer> renderer) 
-	: Mode(renderer) { }
+LoginMode::LoginMode() 
+	: Mode() { }
 
 void LoginMode::init() {
 
@@ -202,8 +203,8 @@ void LoginMode::update() {
 	// // Swap buffers
 	// renderer_->flip();
 
-	renderer_->clear();
+	minerva::globals::gRenderer->clear();
 	getCamera().OnCalcViewInfo(playerPos);
-	renderer_->drawScene(getCamera());
-	renderer_->flip();
+	minerva::globals::gRenderer->drawScene(getCamera());
+	minerva::globals::gRenderer->flip();
 }

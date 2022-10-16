@@ -8,7 +8,7 @@
 #include <SDL.h>
 
 #include "common/debug.hpp"
-
+#include "common/globals.hpp"
 #include "modes/LoginMode.hpp"
 #include "core/ModeManager.hpp"
 
@@ -37,9 +37,9 @@ bool GameClient::Initialize() {
 
 void GameClient::Run() {
 
-    auto renderer = window_->createRenderer();
+    globals::gRenderer = window_->createRenderer();
 
-    modeManager_ = std::make_shared<ModeManager>(ModeType::LOGIN, "", renderer);
+    modeManager_ = std::make_shared<ModeManager>(ModeType::LOGIN, "");
 
     modeManager_->run();
 }

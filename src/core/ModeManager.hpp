@@ -4,16 +4,12 @@
 #include <string>
 #include <memory>
 
-#include "render/Renderer.hpp"
-
 #include "modes/Mode.hpp"
 #include "modes/LoginMode.hpp"
 
-using minerva::render::Renderer;
-
 class ModeManager {
 public:
-	ModeManager(ModeType mode_type, const std::string& map_name, std::shared_ptr<Renderer> renderer);
+	ModeManager(ModeType mode_type, const std::string& map_name);
 
 	void run();
 	void changeMode(ModeType mode_type, const std::string& map_name);
@@ -27,7 +23,6 @@ private:
 	ModeType currentModeType_;
 	std::string nextModeName_;
 	ModeType nextModeType_;
-	std::shared_ptr<Renderer> renderer_;
 };
 
 #endif  // MINERVA_CORE_MODEMANAGER_HPP_

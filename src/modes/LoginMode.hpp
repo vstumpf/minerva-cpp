@@ -8,13 +8,10 @@
 
 #include "modes/Mode.hpp"
 
-#include "render/Renderer.hpp"
-
-using minerva::render::Renderer;
 
 class LoginMode : public Mode {
 public:
-	LoginMode(std::shared_ptr<Renderer> renderer);
+	LoginMode();
 
 	void init() override;
 	int run() override;
