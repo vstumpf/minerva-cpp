@@ -3,4 +3,4 @@
 
 constexpr float PI = 3.141592f;
 
-#endif // MINERVA_RENDER_CONST_HPP_
+#endif  // MINERVA_RENDER_CONST_HPP_

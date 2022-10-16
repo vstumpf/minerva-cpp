@@ -11,11 +11,11 @@ class GlTexture {
   void bind(GLenum target);
   void unbind();
 
-  GLuint texture_id() const;
+  GLuint getTextureId() const;
 
  private:
-  GLuint texture_id_;
-  GLenum binded_target_;
+  GLuint textureId_;
+  GLenum bindedTarget_;
 };
 
 #endif  // MINERVA_RENDER_GLTEXTURE_HPP_

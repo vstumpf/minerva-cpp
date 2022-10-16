@@ -1,16 +1,16 @@
 #include "Core/GameClient.hpp"
 
-#include <nlohmann/json.hpp>
+#include <glad/glad.h>
 #include <fstream>
 #include <iostream>
-#include <glad/glad.h>
+#include <nlohmann/json.hpp>
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
 #include "common/debug.hpp"
 #include "common/globals.hpp"
-#include "modes/LoginMode.hpp"
 #include "core/ModeManager.hpp"
+#include "modes/LoginMode.hpp"
 
 #include "render/Window.hpp"
 
@@ -19,55 +19,52 @@ namespace minerva {
 GameClient::GameClient() {}
 
 GameClient::~GameClient() {
-    SDL_Quit();
+  SDL_Quit();
 }
 
-bool GameClient::Initialize() {
-	LoadConfiguration("minerva.json");
-    window_ = std::make_shared<render::Window>();
+bool GameClient::initialize() {
+  loadConfiguration("minerva.json");
+  window_ = std::make_shared<render::Window>();
 
-    const uint32_t flags = (fullScreen_ ? static_cast<int>(render::DeviceFlag::FULLSCREEN) : 0) |
-        (vsync_ ? static_cast<int>(render::DeviceFlag::VSYNC) : 0);
+  const uint32_t flags =
+      (fullScreen_ ? static_cast<int>(render::DeviceFlag::FULLSCREEN) : 0) |
+      (vsync_ ? static_cast<int>(render::DeviceFlag::VSYNC) : 0);
 
-
-    window_->init(window_width_, window_height_, msaa_, flags);
+  window_->init(windowWidth_, windowHeight_, msaa_, flags);
 
   return true;
 }
 
-void GameClient::Run() {
+void GameClient::run() {
+  globals::gRenderer = window_->createRenderer();
 
-    globals::gRenderer = window_->createRenderer();
+  modeManager_ = std::make_shared<ModeManager>(ModeType::LOGIN, "");
 
-    modeManager_ = std::make_shared<ModeManager>(ModeType::LOGIN, "");
-
-    modeManager_->run();
+  modeManager_->run();
 }
 
-bool GameClient::LoadConfiguration(const std::string& file_name) {
+bool GameClient::loadConfiguration(const std::string& fileName) {
   using json = nlohmann::json;
 
-  json json_config;
+  json jsonConfig;
 
-  std::ifstream json_file(file_name);
+  std::ifstream json_file(fileName);
   if (json_file.is_open()) {
-      json_file >> json_config;
-      json_file.close();
-      try {
-          // Graphics settings
-          const auto& graphics_config = json_config.at("graphics");
-          fullScreen_ = graphics_config.value("fullscreen", false);
-          window_width_ = graphics_config.value("window_width", 640);
-          window_height_ = graphics_config.value("window_height", 480);
-          vsync_ = graphics_config.value("vsync", false);
-          msaa_ = graphics_config.value("msaa", 0);
-      }
-      catch (const std::exception& ex) {
-          LOG(error, "Failed to parse {} ({})", file_name, ex.what());
-      }
-  }
-  else {
-    LOG(warn, "Failed to open {}", file_name);
+    json_file >> jsonConfig;
+    json_file.close();
+    try {
+      // Graphics settings
+      const auto& graphicsConfig = jsonConfig.at("graphics");
+      fullScreen_ = graphicsConfig.value("fullscreen", false);
+      windowWidth_ = graphicsConfig.value("window_width", 640);
+      windowHeight_ = graphicsConfig.value("window_height", 480);
+      vsync_ = graphicsConfig.value("vsync", false);
+      msaa_ = graphicsConfig.value("msaa", 0);
+    } catch (const std::exception& ex) {
+      LOG(error, "Failed to parse {} ({})", fileName, ex.what());
+    }
+  } else {
+    LOG(warn, "Failed to open {}", fileName);
   }
 
   // Sanatize values
@@ -76,12 +73,12 @@ bool GameClient::LoadConfiguration(const std::string& file_name) {
   }
 
   LOG(debug, "Fullscreen: {}", fullScreen_);
-  LOG(debug, "Resolution: {}x{}", window_width_, window_height_);
-  LOG(debug, "Font folder: {}", font_folder_);
+  LOG(debug, "Resolution: {}x{}", windowWidth_, windowHeight_);
+  LOG(debug, "Font folder: {}", fontFolder_);
   LOG(debug, "Vsync: {}", vsync_ ? "On" : "Off");
   LOG(debug, "Anti-aliasing: MSAA {}x", msaa_);
 
   return true;
 }
 
-}
+}  // namespace minerva

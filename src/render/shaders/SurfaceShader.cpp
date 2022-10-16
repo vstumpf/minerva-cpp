@@ -3,7 +3,7 @@
 namespace minerva::render::shaders {
 
 const std::string kSurfaceVertexShader =
-	R"glsl(
+    R"glsl(
 #version 330 core
 layout (location = 0) in vec2 position;
 layout (location = 2) in vec2 texcoord;
@@ -20,7 +20,7 @@ void main()
 )glsl";
 
 const std::string kSurfaceFragmentShader =
-	R"glsl(
+    R"glsl(
 #version 330 core
 
 in vec2 Texcoord;
@@ -35,4 +35,4 @@ void main()
 }
 )glsl";
 
-}
+}  // namespace minerva::render::shaders

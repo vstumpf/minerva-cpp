@@ -1,8 +1,8 @@
 #ifndef MINERVA_RENDER_GLPROGRAM_HPP_
 #define MINERVA_RENDER_GLPROGRAM_HPP_
 
-#include <vector>
 #include <glad/glad.h>
+#include <vector>
 
 #include "render/GlShader.hpp"
 
@@ -15,11 +15,11 @@ class GlProgram {
   void bind() const;
   void unbind() const;
   GLuint getId() const;
-  GLuint getUniformLocation(const std::string& uniform_name) const;
-  GLuint getAttributeLocation(const std::string& attribute_name) const;
+  GLuint getUniformLocation(const std::string& uniformName) const;
+  GLuint getAttributeLocation(const std::string& attributeName) const;
 
   template <class T>
-  void setUniform(const std::string& uniform_name, const T& val);
+  void setUniform(const std::string& uniformName, const T& val);
 
  private:
   // Disable object copy
@@ -27,7 +27,7 @@ class GlProgram {
   const GlProgram& operator=(const GlProgram&);
 
  private:
-  GLuint program_id_;
+  GLuint programId_;
 };
 
 #endif  // MINERVA_RENDER_GLPROGRAM_HPP_

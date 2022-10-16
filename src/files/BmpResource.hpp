@@ -13,27 +13,26 @@ class BmpResource {
   BmpResource();
   ~BmpResource();
 
-  bool Load(const std::string &);
+  bool load(const std::string&);
 
-  uint32_t GetWidth() const;
-  uint32_t GetHeight() const;
-  const char *GetData() const;
-  uint32_t GetColor(uint32_t x, uint32_t y) const;
-  bool LoadFromBuffer(const std::string &, const uint8_t *, size_t);
-  bool LoadBMPData(const uint8_t *, size_t);
+  uint32_t getWidth() const;
+  uint32_t getHeight() const;
+  const char* getData() const;
+  uint32_t getColor(uint32_t x, uint32_t y) const;
+  bool LoadFromBuffer(const std::string&, const uint8_t*, size_t);
+  bool LoadBMPData(const uint8_t*, size_t);
 
  protected:
-  void Reset();
+  void reset();
 
  private:
-  bool LoadImageData(const uint8_t *, size_t);
+  bool LoadImageData(const uint8_t*, size_t);
 
  private:
-  int m_isAlpha;
-  uint32_t m_width;
-  uint32_t m_height;
-  std::vector<char> m_data;
+  int isAlpha_;
+  uint32_t width_;
+  uint32_t height_;
+  std::vector<char> data_;
 };
 
-
-#endif // MINERVA_FILES_BMPRESOURCE_HPP_
+#endif  // MINERVA_FILES_BMPRESOURCE_HPP_

@@ -3,7 +3,7 @@
 namespace minerva::render::shaders {
 
 const std::string kSpriteVertexShader =
-	R"glsl(
+    R"glsl(
 #version 330 core
 layout (location = 0) in vec2 aPosition;
 layout (location = 2) in vec2 aTextureCoord;
@@ -65,7 +65,7 @@ layout (location = 2) in vec2 aTextureCoord;
 )glsl";
 
 const std::string kSpriteFragmentShader =
-	R"glsl(
+    R"glsl(
 #version 330 core
 
 in vec3 Color;
@@ -87,4 +87,4 @@ void main()
 }
 )glsl";
 
-}
+}  // namespace minerva::render::shaders

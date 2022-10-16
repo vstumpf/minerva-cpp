@@ -8,6 +8,6 @@ namespace minerva::render::shaders {
 extern const std::string kSurfaceVertexShader;
 extern const std::string kSurfaceFragmentShader;
 
-}  // namespace
+}  // namespace minerva::render::shaders
 
 #endif  // MINERVA_RENDER_SHADER_SURFACE_SHADER_HPP_

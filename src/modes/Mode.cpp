@@ -2,19 +2,16 @@
 
 #include "modes/Mode.hpp"
 
-Mode::Mode() {
-
-}
+Mode::Mode() {}
 
 bool Mode::getShouldLoop() const {
-	return shouldLoop_;
+  return shouldLoop_;
 }
 
 void Mode::setShouldLoop(bool shouldLoop) {
-	shouldLoop_ = shouldLoop;
+  shouldLoop_ = shouldLoop;
 }
 
-
 Camera& Mode::getCamera() {
-	return camera;
+  return camera;
 }

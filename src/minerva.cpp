@@ -2,7 +2,6 @@
 
 #define SDL_MAIN_HANDLED
 
-
 #include "common/debug.hpp"
 #include "core/GameClient.hpp"
 
@@ -17,11 +16,11 @@ int main(int argc, char* argv[]) {
 
   minerva::GameClient game;
 
-  if (!game.Initialize()) {
+  if (!game.initialize()) {
     return EXIT_FAILURE;
   }
 
-  game.Run();
+  game.run();
 
   return EXIT_SUCCESS;
 }

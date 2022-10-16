@@ -27,13 +27,28 @@ class Surface : public GlTexture {
   SDL_Surface* GetSDLSurfaceXFlipped();
 
   void Create(unsigned long, unsigned long);
-  void UpdateSprite(int x, int y, int width, int height, const SprImg* img,
+  void UpdateSprite(int x,
+                    int y,
+                    int width,
+                    int height,
+                    const SprImg* img,
                     const uint32_t* pal);
   void CopyRect(int, int, int, int, SDL_Surface*);
   void BlitBitmap(int x, int y, int w, int h, const ILubyte* bitmap);
-  void BlitSurface(int x, int y, Surface* src, int srcx, int srcy, int width,
-                   int height, int xflip, float zoomx, float zoomy);
-  void BlitSprite(int x, int y, CSprRes* sprRes, CMotion* curMotion,
+  void BlitSurface(int x,
+                   int y,
+                   Surface* src,
+                   int srcx,
+                   int srcy,
+                   int width,
+                   int height,
+                   int xflip,
+                   float zoomx,
+                   float zoomy);
+  void BlitSprite(int x,
+                  int y,
+                  CSprRes* sprRes,
+                  CMotion* curMotion,
                   uint32_t* palette);
 
  protected:

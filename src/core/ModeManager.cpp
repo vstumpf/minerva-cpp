@@ -1,27 +1,19 @@
 #include "core/ModeManager.hpp"
 
-ModeManager::ModeManager(
-	ModeType mode_type,
-	const std::string& map_name)
-	:	currentModeType_(mode_type),
-	currentModeName_(map_name)
-{
-
-}
+ModeManager::ModeManager(ModeType modeType, const std::string& mapName)
+    : currentModeType_(modeType), currentModeName_(mapName) {}
 
 void ModeManager::run() {
-	currentMode_ = new LoginMode();
-	currentMode_->run();
-	delete currentMode_;
+  currentMode_ = new LoginMode();
+  currentMode_->run();
+  delete currentMode_;
 }
 
-void ModeManager::changeMode(ModeType mode_type, const std::string& map_name) {
-
-}
+void ModeManager::changeMode(ModeType modeType, const std::string& mapName) {}
 void ModeManager::stop() {
-	running_ = false;
+  running_ = false;
 }
 
 Mode* ModeManager::getCurrentMode() const {
-	return currentMode_;
+  return currentMode_;
 }

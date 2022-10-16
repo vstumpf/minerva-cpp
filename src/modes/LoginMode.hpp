@@ -8,19 +8,18 @@
 
 #include "modes/Mode.hpp"
 
-
 class LoginMode : public Mode {
-public:
-	LoginMode();
+ public:
+  LoginMode();
 
-	void init() override;
-	int run() override;
-	void exit() override;
+  void init() override;
+  int run() override;
+  void exit() override;
 
-	void update();
+  void update();
 
-private:
-	glm::vec3 playerPos{0.f, 0.f, 0.f};
+ private:
+  glm::vec3 playerPos{0.f, 0.f, 0.f};
 };
 
-#endif // MINERVA_MODES_LOGINMODE_HPP_
+#endif  // MINERVA_MODES_LOGINMODE_HPP_

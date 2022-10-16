@@ -8,4 +8,4 @@ static auto g_logger = spdlog::stdout_color_mt(MINERVA_LOGGER_NAME);
 
 #ifdef MINERVA_GL_DEBUG
 static auto g_gllogger = spdlog::stdout_color_mt(MINERVA_GL_LOGGER_NAME);
-#endif // MINERVA_GL_DEBUG
+#endif  // MINERVA_GL_DEBUG

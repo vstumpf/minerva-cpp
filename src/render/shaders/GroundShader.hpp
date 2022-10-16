@@ -8,6 +8,6 @@ namespace minerva::render::shaders {
 extern const std::string kGroundVertexShader;
 extern const std::string kGroundFragmentShader;
 
-}  // namespace
+}  // namespace minerva::render::shaders
 
 #endif  // MINERVA_RENDER_SHADER_GROUND_SHADER_HPP_

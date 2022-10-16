@@ -13,7 +13,8 @@
 
 // Surface::Surface(unsigned long w, unsigned long h) : Surface() {
 //   Create(w, h);
-//   sdlSurface_ = SDL_CreateRGBSurface(SDL_SWSURFACE, width_, height_, 32, 0xff,
+//   sdlSurface_ = SDL_CreateRGBSurface(SDL_SWSURFACE, width_, height_, 32,
+//   0xff,
 //                                        0xff00, 0xff0000, 0xff000000);
 //   UpdateGlTexture();
 // }
@@ -50,7 +51,8 @@
 //   }
 
 //   sdlSurfaceXflipped_ = SDL_CreateRGBSurface(
-//       SDL_SWSURFACE, width_, height_, 32, 0xff, 0xff00, 0xff0000, 0xff000000);
+//       SDL_SWSURFACE, width_, height_, 32, 0xff, 0xff00, 0xff0000,
+//       0xff000000);
 //   if (sdlSurfaceXflipped_ == nullptr) {
 //     return nullptr;
 //   }
@@ -76,7 +78,8 @@
 //   height_ = h;
 // }
 
-// void Surface::Update(int x, int y, int width, int height, const ILubyte *image,
+// void Surface::Update(int x, int y, int width, int height, const ILubyte
+// *image,
 //                       int drawOnlyNoTrans) {
 //   if (sdlSurface_ != nullptr &&
 //       (sdlSurface_->w != width || sdlSurface_->h != height)) {
@@ -86,7 +89,8 @@
 
 //   if (sdlSurface_ == nullptr) {
 //     Create(width, height);
-//     sdlSurface_ = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0xff,
+//     sdlSurface_ = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32,
+//     0xff,
 //                                          0xff00, 0xff0000, 0xff000000);
 //   }
 
@@ -191,8 +195,9 @@
 //   glGenerateMipmap(GL_TEXTURE_2D);
 
 //   float largest_supported_anisotropy;
-//   glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &largest_supported_anisotropy);
-//   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT,
+//   glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT,
+//   &largest_supported_anisotropy); glTexParameterf(GL_TEXTURE_2D,
+//   GL_TEXTURE_MAX_ANISOTROPY_EXT,
 //                   largest_supported_anisotropy);
 
 //   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

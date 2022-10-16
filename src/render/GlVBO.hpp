@@ -6,26 +6,26 @@
 #include <cstdint>
 
 class GlVBO {
-public:
-    GlVBO();
-    ~GlVBO();
+ public:
+  GlVBO();
+  ~GlVBO();
 
-    int size() const;
+  int size() const;
 
-    template <class T>
-    inline void SetVertexFormat() {
-        element_size_ = sizeof(T);
-    }
+  template <class T>
+  inline void SetVertexFormat() {
+    elementSize_ = sizeof(T);
+  }
 
-    void SetData(const void* data, size_t size, uint32_t usage = GL_DYNAMIC_DRAW);
-    void SetSubData(int offset, const void* data, int size);
-    void Bind();
-    void Unbind();
+  void setData(const void* data, size_t size, uint32_t usage = GL_DYNAMIC_DRAW);
+  void setSubData(int offset, const void* data, int size);
+  void bind();
+  void unbind();
 
-private:
-    size_t element_size_;
-    GLuint id_;
-    size_t size_;
+ private:
+  size_t elementSize_;
+  GLuint id_;
+  size_t size_;
 };
 
 #endif  // MINERVA_RENDER_VBO_HPP_

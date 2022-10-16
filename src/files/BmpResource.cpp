@@ -7,58 +7,66 @@
 
 #include "common/debug.hpp"
 
-BmpResource::BmpResource() : m_isAlpha(), m_width(), m_height(), m_data() {}
+BmpResource::BmpResource() : isAlpha_(), width_(), height_(), data_() {}
 
-BmpResource::~BmpResource() { Reset(); }
-
-uint32_t BmpResource::GetWidth() const { return m_width; }
-
-uint32_t BmpResource::GetHeight() const { return m_height; }
-
-const char* BmpResource::GetData() const { return m_data.data(); }
-
-void BmpResource::Reset() {
-  m_data.clear();
-  m_width = 0;
-  m_height = 0;
+BmpResource::~BmpResource() {
+  reset();
 }
 
-uint32_t BmpResource::GetColor(uint32_t x, uint32_t y) const {
+uint32_t BmpResource::getWidth() const {
+  return width_;
+}
+
+uint32_t BmpResource::getHeight() const {
+  return height_;
+}
+
+const char* BmpResource::getData() const {
+  return data_.data();
+}
+
+void BmpResource::reset() {
+  data_.clear();
+  width_ = 0;
+  height_ = 0;
+}
+
+uint32_t BmpResource::getColor(uint32_t x, uint32_t y) const {
   uint32_t result;
 
-  if (x < 0 || x >= m_width || y < 0 || y >= m_height) {
+  if (x < 0 || x >= width_ || y < 0 || y >= height_) {
     result = 0x00FF0000;
   } else {
-    result = m_data[static_cast<size_t>(x) + static_cast<size_t>(y) * m_width];
+    result = data_[static_cast<size_t>(x) + static_cast<size_t>(y) * width_];
   }
 
   return result;
 }
 
-bool BmpResource::Load(const std::string& filename) {
+bool BmpResource::load(const std::string& filename) {
+  reset();
 
-  Reset();
+  int width, height, channels;
+  char* data = reinterpret_cast<char*>(
+      stbi_load(filename.c_str(), &width, &height, &channels, 4));
 
-	int width, height, channels;
-	char * data = reinterpret_cast<char *>(stbi_load(filename.c_str(), &width, &height, &channels, 4));
+  if (!data) {
+    LOG(error, "Failed to load image data for {}", filename);
+    return false;
+  }
 
-	if (!data) {
-		LOG(error, "Failed to load image data for {}", filename);
-		return false;
-	}
+  LOG(debug, "STBI: File {} | Width {} | Height {} | Channels {}", filename,
+      width, height, channels);
 
-	LOG(debug, "STBI: File {} | Width {} | Height {} | Channels {}", filename, width, height, channels);
+  width_ = width;
+  height_ = height;
 
-	m_width = width;
-	m_height = height;
+  size_t size = width * height * 4 * sizeof(char);
 
+  data_.reserve(size);
 
-	size_t size = width * height * 4 * sizeof(char);
+  memmove(data_.data(), data, size);
 
-	m_data.reserve(size);
-
-	memmove(m_data.data(), data, size);
-
-	stbi_image_free(data);
+  stbi_image_free(data);
   return true;
 }
