@@ -18,6 +18,14 @@ namespace minerva::render {
 
 class Window;  // forward declare
 
+struct RenderBlockSprite3d {
+  BmpResource* bmp_;    // sprite resource to use
+  glm::vec3 position_;  // position in world coords
+  glm::vec2 offset_;    // offset from position
+  glm::vec2 size_;      // scale
+  float color_[4];      // tint color to apply
+};
+
 class Renderer {
  public:
   Renderer(Window* window, PixelFormat pf = PixelFormat::A8R8G8B8);
@@ -29,6 +37,8 @@ class Renderer {
   void flip();
   void clear();
 
+  void addSpriteRenderBlock(RenderBlockSprite3d renderBlock);
+
   glm::vec3 cameraPos{1.f};
   glm::vec3 cameraFront{1.f};
   glm::vec3 cameraUp{1.f};
@@ -38,6 +48,8 @@ class Renderer {
   void drawSurfaces();
   void drawSprites(const Camera& camera);
   void drawGround(const Camera& camera);
+
+  void clearRenderLists();
 
  private:
   Window* window_{nullptr};
@@ -78,6 +90,8 @@ class Renderer {
   BmpResource groundTexture_;
   BmpResource growlitheTexture_;
   BmpResource charInfoTexture_;
+
+  std::vector<RenderBlockSprite3d> spriteRenderList_;
 
   decltype(std::chrono::high_resolution_clock::now()) startTime_;
 };

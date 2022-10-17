@@ -126,6 +126,14 @@ void Renderer::setSize(uint32_t width, uint32_t height) {
                                    static_cast<float>(height), 0.f, -1.f, 1.f);
 }
 
+void Renderer::addSpriteRenderBlock(RenderBlockSprite3d renderBlock) {
+  spriteRenderList_.push_back(std::move(renderBlock));
+}
+
+void Renderer::clearRenderLists() {
+  spriteRenderList_.clear();
+}
+
 char const* gl_error_string(GLenum const err) noexcept {
   switch (err) {
     // opengl 2 errors (8)
@@ -165,6 +173,8 @@ void Renderer::drawScene(const Camera& camera) {
   drawGround(camera);
   drawSprites(camera);
   drawSurfaces();
+
+  clearRenderLists();
 }
 
 void Renderer::drawGround(const Camera& camera) {
