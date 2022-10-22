@@ -42,7 +42,7 @@ void Surface::updateSprite(int x,
                            int y,
                            int width,
                            int height,
-                           const BmpResource* img) {
+                           const minerva::files::BmpResource* img) {
   if (sdlSurface_ && (sdlSurface_->w != width || sdlSurface_->h != height)) {
     SDL_FreeSurface(sdlSurface_);
     sdlSurface_ = nullptr;

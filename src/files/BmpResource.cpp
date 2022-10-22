@@ -7,7 +7,7 @@
 
 #include "common/debug.hpp"
 
-BmpResource::BmpResource() : isAlpha_(), width_(), height_(), data_() {}
+namespace minerva::files {
 
 BmpResource::~BmpResource() {
   reset();
@@ -72,3 +72,5 @@ bool BmpResource::load(const std::string& filename) {
   stbi_image_free(data);
   return true;
 }
+
+}  // namespace minerva::files

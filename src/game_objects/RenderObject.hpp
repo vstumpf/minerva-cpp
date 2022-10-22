@@ -23,7 +23,7 @@ class RenderObject {
 
  protected:
   glm::vec3 pos_{0.f};
-  BmpResource spriteResource_;
+  minerva::files::BmpResource spriteResource_;
   Surface surface_;
 };
 

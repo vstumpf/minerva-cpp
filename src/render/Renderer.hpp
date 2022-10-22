@@ -87,8 +87,8 @@ class Renderer {
   GlVBO spriteVbo_;
   GlVBO surfaceVbo_;
 
-  BmpResource groundTexture_;
-  BmpResource charInfoTexture_;
+  minerva::files::BmpResource groundTexture_;
+  minerva::files::BmpResource charInfoTexture_;
 
   std::vector<RenderBlockSprite3d> spriteRenderList_;
 

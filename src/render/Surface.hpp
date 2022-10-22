@@ -23,7 +23,7 @@ class Surface : public GlTexture {
                             int y,
                             int width,
                             int height,
-                            const BmpResource* img);
+                            const minerva::files::BmpResource* img);
 
   unsigned long getWidth() const;
   unsigned long getHeight() const;
