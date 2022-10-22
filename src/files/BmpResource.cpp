@@ -37,7 +37,9 @@ uint32_t BmpResource::getColor(uint32_t x, uint32_t y) const {
   if (x < 0 || x >= width_ || y < 0 || y >= height_) {
     result = 0x00FF0000;
   } else {
-    result = data_[static_cast<size_t>(x) + static_cast<size_t>(y) * width_];
+    auto idx = static_cast<size_t>(x) + static_cast<size_t>(y) * width_;
+    LOG(info, "idx is {}", idx);
+    result = data_[idx];
   }
 
   return result;

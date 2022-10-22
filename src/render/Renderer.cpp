@@ -60,6 +60,20 @@ Renderer::Renderer(Window* window, PixelFormat pf)
   myVbo_.setData(vertices.data(), vertices.size(), GL_STATIC_DRAW);
   myVbo_.unbind();
 
+  std::vector<float> spriteVertices = {
+      // Position   Texcoords
+      -0.5f, 0.5f,  0.0f, 0.0f,  // Top-left
+      0.5f,  0.5f,  1.0f, 0.0f,  // Top-right
+      -0.5f, -0.5f, 0.0f, 1.0f,  // Bottom-left
+      0.5f,  -0.5f, 1.0f, 1.0f,  // Bottom-right
+  };
+
+  spriteVbo_.SetVertexFormat<float>();
+  spriteVbo_.bind();
+  spriteVbo_.setData(spriteVertices.data(), spriteVertices.size(),
+                     GL_STATIC_DRAW);
+  spriteVbo_.unbind();
+
   std::vector<float> surfaceVertices = {
       // position
       0 + 200, 0 + 200, 1.f, 1.f, 0 + 200, 0,       1.f, 0.f,
@@ -73,7 +87,6 @@ Renderer::Renderer(Window* window, PixelFormat pf)
   surfaceVbo_.unbind();
 
   groundTexture_.load("assets/ground/ground.bmp");
-  growlitheTexture_.load("assets/sprites/growlithe.bmp");
   charInfoTexture_.load("assets/window/charinfo.bmp");
 
   startTime_ = std::chrono::high_resolution_clock::now();
@@ -251,19 +264,18 @@ void Renderer::drawSprites(const Camera& camera) {
   spriteProgram_.bind();
 
   GLLOG(debug, "bind vbo");
-  myVbo_.bind();
+  spriteVbo_.bind();
 
   // Setup layout of vertex data
   GLLOG(debug, "setup layout");
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
-  glEnableVertexAttribArray(0);
+  auto positionAttribute = spriteProgram_.getAttributeLocation("aPosition");
+  glVertexAttribPointer(positionAttribute, 2, GL_FLOAT, GL_FALSE,
+                        4 * sizeof(float), 0);
+  glEnableVertexAttribArray(positionAttribute);
 
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float),
-                        (void*)(2 * sizeof(float)));
-  glEnableVertexAttribArray(1);
-
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 7 * sizeof(float),
-                        (void*)(5 * sizeof(float)));
+  auto textureAttribute = spriteProgram_.getAttributeLocation("aTextureCoord");
+  glVertexAttribPointer(textureAttribute, 2, GL_FLOAT, GL_FALSE,
+                        4 * sizeof(float), (void*)(2 * sizeof(float)));
   glEnableVertexAttribArray(2);
 
   spriteProgram_.setUniform("uModelViewMat", camera.getViewMatrix());
@@ -271,37 +283,16 @@ void Renderer::drawSprites(const Camera& camera) {
 
   spriteProgram_.setUniform("uCameraLatitude", camera.getCurrentLatitude());
 
-  auto pos = glm::vec3(0.f, 0.f, 0.f);
-  // int currentTick = SDL_GetTicks();
-  // pos.x = static_cast<float>(currentTick % 4000) / 1000.f - 2;
-  // pos.y = static_cast<float>(currentTick % 4000) / 1000.f - 2;
-  // pos.z = 1;
-
-  spriteProgram_.setUniform("uSpriteRendererPosition", pos);
-
-  // Load texture
-  GLuint textures[1];
-  glGenTextures(1, textures);
-
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, textures[0]);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, growlitheTexture_.getWidth(),
-               growlitheTexture_.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
-               growlitheTexture_.getData());
-  spriteProgram_.setUniform("uTexture", 0);
+  for (const auto& renderBlock : spriteRenderList_) {
+    spriteProgram_.setUniform("uSpriteRendererPosition", renderBlock.position_);
+    renderBlock.surface_->bind(GL_TEXTURE_2D);
+    GLLOG(debug, "draw triangles");
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    auto error = glGetError();
+    GLLOG(debug, gl_error_string(error));
+  }
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-  GLLOG(debug, "draw triangles");
-  glDrawArrays(GL_TRIANGLES, 0, 6);
-  auto error = glGetError();
-
-  glDeleteTextures(1, textures);
-
-  GLLOG(debug, gl_error_string(error));
   GLLOG(debug, "disable layout");
   GLLOG(debug, "unbind vbo");
   myVbo_.unbind();

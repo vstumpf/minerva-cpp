@@ -198,6 +198,20 @@ void LoginMode::update() {
 
   minerva::globals::gRenderer->clear();
   getCamera().onCalcViewInfo(playerPos);
+
+  auto pos = glm::vec3(0.f, 0.f, 0.f);
+  int currentTick = SDL_GetTicks();
+  pos.x = static_cast<float>(currentTick % 4000) / 1000.f - 2;
+  pos.y = static_cast<float>(currentTick % 4000) / 1000.f - 2;
+  pos.z = 1;
+  growlithe_.setPos(pos);
+  growlithe_.render(getCamera());
+
+  pos.x = (static_cast<float>(currentTick % 4000) / 1000.f - 2);
+  pos.y = -(static_cast<float>(currentTick % 4000) / 1000.f - 2);
+  growlithe2_.setPos(pos);
+  growlithe2_.render(getCamera());
+
   minerva::globals::gRenderer->drawScene(getCamera());
   minerva::globals::gRenderer->flip();
 }

@@ -6,11 +6,11 @@
 #include <glm/glm.hpp>
 #include <memory>
 
-#include "files/BmpResource.hpp"
 #include "render/Camera.hpp"
 #include "render/GlProgram.hpp"
 #include "render/GlShader.hpp"
 #include "render/GlVBO.hpp"
+#include "render/Surface.hpp"
 #include "render/Window.hpp"
 #include "render/pixel_format.hpp"
 
@@ -19,7 +19,7 @@ namespace minerva::render {
 class Window;  // forward declare
 
 struct RenderBlockSprite3d {
-  BmpResource* bmp_;    // sprite resource to use
+  Surface* surface_;    // surface to render, usually a sprite frame
   glm::vec3 position_;  // position in world coords
   glm::vec2 offset_;    // offset from position
   glm::vec2 size_;      // scale
@@ -84,11 +84,10 @@ class Renderer {
   GlProgram surfaceProgram_;
   GlProgram spriteProgram_;
   GlVBO myVbo_;
-
+  GlVBO spriteVbo_;
   GlVBO surfaceVbo_;
 
   BmpResource groundTexture_;
-  BmpResource growlitheTexture_;
   BmpResource charInfoTexture_;
 
   std::vector<RenderBlockSprite3d> spriteRenderList_;

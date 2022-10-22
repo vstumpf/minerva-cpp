@@ -1,13 +1,16 @@
-#ifndef DOLORI_RENDER_SURFACE_H_
-#define DOLORI_RENDER_SURFACE_H_
+#ifndef MINERVA_RENDER_SURFACE_HPP_
+#define MINERVA_RENDER_SURFACE_HPP_
 
 #include <stdint.h>
 
 #include <SDL.h>
 #include <stb_image.h>
 
+#include "files/BmpResource.hpp"
 #include "render/GlTexture.hpp"
 #include "render/pixel_format.hpp"
+
+namespace minerva::render {
 
 class Surface : public GlTexture {
  public:
@@ -16,50 +19,29 @@ class Surface : public GlTexture {
   Surface(unsigned long, unsigned long);
   ~Surface();
 
-  virtual void ClearSurface(SDL_Rect* rect, uint32_t color);
-  virtual void DrawSurface(int, int, int, int, unsigned int);
-  virtual void DrawSurfaceStretch(int, int, int, int);
-  virtual void Update(int, int, int, int, const ILubyte*, int);
+  virtual void updateSprite(int x,
+                            int y,
+                            int width,
+                            int height,
+                            const BmpResource* img);
 
-  unsigned long GetWidth() const;
-  unsigned long GetHeight() const;
-  SDL_Surface* GetSDLSurface() const;
-  SDL_Surface* GetSDLSurfaceXFlipped();
+  unsigned long getWidth() const;
+  unsigned long getHeight() const;
+  SDL_Surface* getSDLSurface() const;
 
-  void Create(unsigned long, unsigned long);
-  void UpdateSprite(int x,
-                    int y,
-                    int width,
-                    int height,
-                    const SprImg* img,
-                    const uint32_t* pal);
-  void CopyRect(int, int, int, int, SDL_Surface*);
-  void BlitBitmap(int x, int y, int w, int h, const ILubyte* bitmap);
-  void BlitSurface(int x,
-                   int y,
-                   Surface* src,
-                   int srcx,
-                   int srcy,
-                   int width,
-                   int height,
-                   int xflip,
-                   float zoomx,
-                   float zoomy);
-  void BlitSprite(int x,
-                  int y,
-                  CSprRes* sprRes,
-                  CMotion* curMotion,
-                  uint32_t* palette);
+  void create(unsigned long width, unsigned long height);
 
  protected:
-  void UpdateGlTexture();
+  void updateGlTexture();
 
  protected:
   unsigned long width_;
   unsigned long height_;
-  SDL_Surface* sdlSurface_;
+  SDL_Surface* sdlSurface_{nullptr};
   bool needUpdateXflipped_;
   SDL_Surface* sdlSurfaceXflipped_;
 };
 
-#endif  // DOLORI_RENDER_SURFACE_H_
+}  // namespace minerva::render
+
+#endif  // MINERVA_RENDER_SURFACE_HPP_
