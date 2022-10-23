@@ -10,6 +10,9 @@
 
 namespace minerva::files {
 
+/**
+ * A resource that loads a BMP file
+ */
 class BmpResource : public Resource {
  public:
   BmpResource() = default;

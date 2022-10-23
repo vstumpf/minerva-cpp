@@ -37,7 +37,7 @@ uint32_t BmpResource::getColor(uint32_t x, uint32_t y) const {
   if (x < 0 || x >= width_ || y < 0 || y >= height_) {
     result = 0x00FF0000;
   } else {
-    auto idx = static_cast<size_t>(x) + static_cast<size_t>(y) * width_;
+    auto idx = (static_cast<size_t>(x) + static_cast<size_t>(y) * width_) * 4;
     LOG(info, "idx is {}", idx);
     result = data_[idx];
   }
@@ -57,21 +57,22 @@ bool BmpResource::load(const std::string& filename) {
     return false;
   }
 
-  LOG(debug, "STBI: File {} | Width {} | Height {} | Channels {}", filename,
-      width, height, channels);
-
   width_ = width;
   height_ = height;
 
   size_t size = width * height * 4 * sizeof(char);
 
-  data_.reserve(size);
+  data_.resize(size);
 
   memmove(data_.data(), data, size);
 
   stbi_image_free(data);
 
   updateInfo(filename);
+
+  LOG(debug, "STBI: File {} | Width {} | Height {} | Size {} | Channels {}",
+      filename, width, height, data_.size(), channels);
+
   return true;
 }
 
