@@ -7,9 +7,11 @@
 namespace minerva::render {
 
 RenderObject::RenderObject() : pos_() {
-  spriteResource_.load("assets/sprites/growlithe.bmp");
-  surface_.updateSprite(0, 0, spriteResource_.getWidth(),
-                        spriteResource_.getHeight(), &spriteResource_);
+  spriteResource_ = minerva::globals::gResourceManager
+                        ->getResource<minerva::files::BmpResource>(
+                            "assets/sprites/growlithe.bmp");
+  surface_.updateSprite(0, 0, spriteResource_->getWidth(),
+                        spriteResource_->getHeight(), spriteResource_.get());
 }
 
 void RenderObject::render(const Camera& view) {

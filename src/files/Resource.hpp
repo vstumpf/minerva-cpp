@@ -15,9 +15,10 @@ class Resource {
 
  protected:
   virtual void reset() = 0;
+  void updateInfo(const std::string&);
 
  private:
-  std::string resourceName_{};
+  std::string fileName_{};
 };
 
 }  // namespace minerva::files

@@ -3,7 +3,11 @@
 namespace minerva::files {
 
 const std::string& Resource::getName() const {
-  return resourceName_;
+  return fileName_;
+}
+
+void Resource::updateInfo(const std::string& filename) {
+  fileName_ = filename;
 }
 
 }  // namespace minerva::files

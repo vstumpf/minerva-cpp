@@ -70,6 +70,8 @@ bool BmpResource::load(const std::string& filename) {
   memmove(data_.data(), data, size);
 
   stbi_image_free(data);
+
+  updateInfo(filename);
   return true;
 }
 

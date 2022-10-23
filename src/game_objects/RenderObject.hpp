@@ -2,6 +2,7 @@
 #define MINERVA_GAMEOBJECT_RENDEROBJECT_HPP_
 
 #include <glm/glm.hpp>
+#include <memory>
 #include "files/BmpResource.hpp"
 #include "render/Camera.hpp"
 #include "render/Surface.hpp"
@@ -23,7 +24,7 @@ class RenderObject {
 
  protected:
   glm::vec3 pos_{0.f};
-  minerva::files::BmpResource spriteResource_;
+  std::shared_ptr<minerva::files::BmpResource> spriteResource_{nullptr};
   Surface surface_;
 };
 
