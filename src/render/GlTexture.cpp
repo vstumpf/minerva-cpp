@@ -1,6 +1,6 @@
 #include "render/GlTexture.hpp"
 
-GlTexture::GlTexture() : bindedTarget_(0) {
+GlTexture::GlTexture() {
   glGenTextures(1, &textureId_);
 }
 

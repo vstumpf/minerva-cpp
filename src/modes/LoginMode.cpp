@@ -4,8 +4,6 @@
 #include "common/debug.hpp"
 #include "common/globals.hpp"
 
-LoginMode::LoginMode() : Mode() {}
-
 void LoginMode::init() {}
 
 // // Shader sources

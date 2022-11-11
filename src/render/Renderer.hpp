@@ -80,9 +80,9 @@ class Renderer {
 
   GlShader vertexShader_;
   GlShader fragmentShader_;
-  GlProgram groundProgram_;
-  GlProgram surfaceProgram_;
-  GlProgram spriteProgram_;
+  GlProgram groundProgram_{};
+  GlProgram surfaceProgram_{};
+  GlProgram spriteProgram_{};
   GlVBO myVbo_;
   GlVBO spriteVbo_;
   GlVBO surfaceVbo_;

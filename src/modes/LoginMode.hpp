@@ -14,7 +14,7 @@
  */
 class LoginMode : public Mode {
  public:
-  LoginMode();
+  LoginMode() = default;
 
   void init() override;
   int run() override;

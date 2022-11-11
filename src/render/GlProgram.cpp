@@ -4,8 +4,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-GlProgram::GlProgram() : programId_() {}
-
 GlProgram::~GlProgram() {
   glDeleteProgram(programId_);
 }
@@ -58,8 +56,7 @@ GLuint GlProgram::getUniformLocation(const std::string& uniformName) const {
   return glGetUniformLocation(programId_, uniformName.c_str());
 }
 
-GLuint GlProgram::getAttributeLocation(
-    const std::string& attributeName) const {
+GLuint GlProgram::getAttributeLocation(const std::string& attributeName) const {
   return glGetAttribLocation(programId_, attributeName.c_str());
 }
 

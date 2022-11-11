@@ -6,7 +6,7 @@
 
 namespace minerva::render {
 
-RenderObject::RenderObject() : pos_() {
+RenderObject::RenderObject() {
   spriteResource_ = minerva::globals::gResourceManager
                         ->getResource<minerva::files::BmpResource>(
                             "assets/sprites/growlithe.bmp");

@@ -14,8 +14,8 @@ class GlTexture {
   GLuint getTextureId() const;
 
  private:
-  GLuint textureId_;
-  GLenum bindedTarget_;
+  GLuint textureId_{0};
+  GLenum bindedTarget_{0};
 };
 
 #endif  // MINERVA_RENDER_GLTEXTURE_HPP_

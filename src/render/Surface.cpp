@@ -6,13 +6,6 @@
 
 namespace minerva::render {
 
-Surface::Surface()
-    : width_(),
-      height_(),
-      sdlSurface_(nullptr),
-      needUpdateXflipped_(false),
-      sdlSurfaceXflipped_(nullptr) {}
-
 Surface::~Surface() {
   if (sdlSurface_)
     SDL_FreeSurface(sdlSurface_);

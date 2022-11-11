@@ -16,8 +16,6 @@
 
 namespace minerva {
 
-GameClient::GameClient() {}
-
 GameClient::~GameClient() {
   SDL_Quit();
 }

@@ -18,7 +18,7 @@ namespace minerva {
  */
 class GameClient {
  public:
-  GameClient();
+  GameClient() = default;
   ~GameClient();
 
   bool initialize();
@@ -31,12 +31,12 @@ class GameClient {
   std::shared_ptr<render::Window> window_{nullptr};
   std::shared_ptr<ModeManager> modeManager_{nullptr};
 
-  bool fullScreen_{false};
+  std::string fontFolder_{""};
   int windowWidth_{640};
   int windowHeight_{480};
-  bool vsync_{false};
   unsigned int msaa_{0};
-  std::string fontFolder_{""};
+  bool fullScreen_{false};
+  bool vsync_{false};
 };
 
 }  // namespace minerva

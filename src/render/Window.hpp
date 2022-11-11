@@ -15,7 +15,7 @@ enum class DeviceFlag : int { FULLSCREEN = 0x1, VSYNC = 0x2 };
 
 class Window {
  public:
-  Window(){};
+  Window() = default;
   ~Window() {
     if (sdlWindow_)
       SDL_DestroyWindow(sdlWindow_);

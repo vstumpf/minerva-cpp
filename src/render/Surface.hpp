@@ -14,7 +14,7 @@ namespace minerva::render {
 
 class Surface : public GlTexture {
  public:
-  Surface();
+  Surface() = default;
   explicit Surface(SDL_Surface*);
   Surface(unsigned long, unsigned long);
   ~Surface();
@@ -35,11 +35,11 @@ class Surface : public GlTexture {
   void updateGlTexture();
 
  protected:
-  unsigned long width_;
-  unsigned long height_;
+  unsigned long width_{};
+  unsigned long height_{};
   SDL_Surface* sdlSurface_{nullptr};
-  bool needUpdateXflipped_;
-  SDL_Surface* sdlSurfaceXflipped_;
+  SDL_Surface* sdlSurfaceXflipped_{nullptr};
+  bool needUpdateXflipped_{false};
 };
 
 }  // namespace minerva::render

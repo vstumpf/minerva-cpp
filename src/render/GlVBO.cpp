@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-GlVBO::GlVBO() : elementSize_(), size_() {
+GlVBO::GlVBO() {
   glGenBuffers(1, &id_);
 }
 

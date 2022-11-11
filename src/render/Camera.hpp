@@ -13,8 +13,6 @@ struct ViewInfo3d {
 
 class Camera {
  public:
-  Camera();
-
   float getCurrentLatitude() const;
   // Return a camera direction that's compatible with GameActor directions
   int getDirection() const;

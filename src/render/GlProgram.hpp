@@ -8,7 +8,7 @@
 
 class GlProgram {
  public:
-  GlProgram();
+  GlProgram() = default;
   ~GlProgram();
 
   bool init(const std::vector<GlShader>& shaders);
@@ -27,7 +27,7 @@ class GlProgram {
   const GlProgram& operator=(const GlProgram&);
 
  private:
-  GLuint programId_;
+  GLuint programId_{0};
 };
 
 #endif  // MINERVA_RENDER_GLPROGRAM_HPP_

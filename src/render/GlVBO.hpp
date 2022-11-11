@@ -23,9 +23,9 @@ class GlVBO {
   void unbind();
 
  private:
-  size_t elementSize_;
-  GLuint id_;
-  size_t size_;
+  size_t elementSize_{};
+  GLuint id_{};
+  size_t size_{};
 };
 
 #endif  // MINERVA_RENDER_VBO_HPP_

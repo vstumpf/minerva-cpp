@@ -21,12 +21,12 @@ class ModeManager {
   Mode* getCurrentMode() const;
 
  private:
-  bool running_{false};
+  std::string currentModeName_{};
+  std::string nextModeName_{};
   Mode* currentMode_{nullptr};
-  std::string currentModeName_;
-  ModeType currentModeType_;
-  std::string nextModeName_;
-  ModeType nextModeType_;
+  ModeType currentModeType_{};
+  ModeType nextModeType_{};
+  bool running_{false};
 };
 
 #endif  // MINERVA_CORE_MODEMANAGER_HPP_

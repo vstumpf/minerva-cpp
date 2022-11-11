@@ -5,8 +5,6 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-Camera::Camera() {}
-
 float Camera::getCurrentLatitude() const {
   return cur_.latitude - 180.f;
 }
