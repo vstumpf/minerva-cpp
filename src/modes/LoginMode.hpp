@@ -9,6 +9,9 @@
 #include "game_objects/RenderObject.hpp"
 #include "modes/Mode.hpp"
 
+/**
+ * The mode for Login Server
+ */
 class LoginMode : public Mode {
  public:
   LoginMode();

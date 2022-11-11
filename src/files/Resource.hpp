@@ -5,6 +5,9 @@
 
 namespace minerva::files {
 
+/**
+ * Base Class for Resources
+ */
 class Resource {
  public:
   Resource() = default;

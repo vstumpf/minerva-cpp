@@ -67,7 +67,7 @@ bool GameClient::loadConfiguration(const std::string& fileName) {
     LOG(warn, "Failed to open {}", fileName);
   }
 
-  // Sanatize values
+  // Sanitize values
   if (msaa_ > 32) {
     msaa_ = 32;
   }

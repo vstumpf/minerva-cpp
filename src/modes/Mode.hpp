@@ -9,6 +9,9 @@ enum class ModeType {
   LOGIN,
 };
 
+/**
+ * Base class for Modes
+ */
 class Mode {
  public:
   Mode();

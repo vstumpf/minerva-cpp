@@ -7,6 +7,10 @@
 #include "modes/LoginMode.hpp"
 #include "modes/Mode.hpp"
 
+/**
+ * Handle the current mode and switching to the next
+ * Things like Login, Char Select, each Map
+ */
 class ModeManager {
  public:
   ModeManager(ModeType modeType, const std::string& mapName);

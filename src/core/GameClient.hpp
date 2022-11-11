@@ -12,6 +12,10 @@
 
 namespace minerva {
 
+/**
+ * This is the game client
+ * Handles the loading of the configuration file
+ */
 class GameClient {
  public:
   GameClient();
